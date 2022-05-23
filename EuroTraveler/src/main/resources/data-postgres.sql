@@ -1,0 +1,1 @@
+INSERT INTO PESMA (duzina,naziv) VALUES (123,'pera');

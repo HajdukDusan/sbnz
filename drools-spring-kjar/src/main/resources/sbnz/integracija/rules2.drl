@@ -1,0 +1,11 @@
+package sbnz.integracija;
+
+import com.example.MusicRecc.facts.Item;
+
+rule "Classify Item - Low Range"
+    when
+        $i: Item( cost <= 300)
+    then
+        $i.setCost(300.0);
+        update($i);
+end
