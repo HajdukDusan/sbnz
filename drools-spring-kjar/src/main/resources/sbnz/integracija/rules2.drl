@@ -1,11 +1,11 @@
-package sbnz.integracija;
+package com.example.EuroTraveler;
 
-import com.example.MusicRecc.facts.Item;
+import com.example.EuroTraveler.facts.Item;
 
-rule "Classify Item - Low Range"
+rule "Classify Item - High Range"
     when
-        $i: Item( cost <= 300)
+        $i: Item( cost > 300, category == Category.NA )
     then
-        $i.setCost(300.0);
+        $i.setCategory(Item.Category.HIGH_RANGE);
         update($i);
 end
