@@ -1,15 +1,11 @@
 package com.example.MusicRecc.model;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,10 +25,11 @@ public class Slusanje {
     protected Long id;
 
     @Column
-    protected Date datumSlusanja;
+    protected LocalDateTime datumSlusanja;
 
-//    @Column
-//    protected Pesma pesma;
-//    @Column
-//    protected Korisnik korisnik;
+
+
+    private Long pesma;
+
+    private Long korisnik;
 }

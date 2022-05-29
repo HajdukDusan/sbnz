@@ -1,1 +1,1 @@
-INSERT INTO PESMA (duzina,naziv) VALUES (123,'pera');
+INSERT INTO ZANT (naziv) VALUES ('pera');

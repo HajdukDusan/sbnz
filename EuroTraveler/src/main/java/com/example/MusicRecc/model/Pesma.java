@@ -3,13 +3,9 @@ package com.example.MusicRecc.model;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,16 +28,29 @@ public class Pesma {
     protected Long duzina;
     @Column
     private String naziv;
-//    @Column
-//    protected Izvodjac izvodjac;
-//    @Column
-//    protected List<String> zanrovi;
-//    @Column
-//    protected List<Integer> ocene;
-//    @Column
-//    protected Date datumIzlaska;
-//    @Column
-//    protected BigInteger brojSlusanja;
-//    @Column
-//    protected List<String> osobine;
+
+    private Long izvodjac;
+    @ManyToMany(fetch =FetchType.EAGER)
+    @JoinTable(name = "pesma_zanr",
+            joinColumns = @JoinColumn(name = "pesma_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "zanr_id", referencedColumnName = "id"))
+    private List<Zanr> zanroviPesma;
+
+
+    @OneToMany(mappedBy="pesma")
+    private List<Ocena> ocene;
+
+    protected Date datumIzlaska;
+
+
+    @OneToMany(mappedBy = "pesma")
+    private List<Slusanje> slusanja;
+
+    protected BigInteger brojSlusanja;
+
+    @ManyToMany(fetch =FetchType.EAGER)
+    @JoinTable(name = "pesma_osobina",
+            joinColumns = @JoinColumn(name = "pesma_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "osobina_id", referencedColumnName = "id"))
+    protected Set<Osobina> osobine;
 }

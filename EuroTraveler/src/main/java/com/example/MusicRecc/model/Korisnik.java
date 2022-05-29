@@ -2,12 +2,7 @@ package com.example.MusicRecc.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,10 +27,10 @@ public class Korisnik {
     protected String password;
     @Column
     protected String email;
-//
-//    @Column
-//    protected List<Slusanje> istorijaSlusanja;
-//
-//    @Column
-//    protected List<Integer> istorijaOcena;
+
+    @OneToMany(mappedBy = "korisnik")
+    protected List<Slusanje> istorijaSlusanja;
+
+    @OneToMany(mappedBy = "korisnik")
+    protected List<Ocena> istorijaOcena;
 }

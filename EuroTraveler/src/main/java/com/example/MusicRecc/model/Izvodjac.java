@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,8 +24,12 @@ public class Izvodjac {
 
     @Column
     protected String Ime;
-//    @OneToMany
-//    protected List<Pesma> pesme;
-//    @ManyToMany
-//    private List<String> zanrovi;
+    @OneToMany
+    protected List<Pesma> pesme;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "izvodjac_zanr",
+            joinColumns = @JoinColumn(name = "izvodjac_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "zanr_id", referencedColumnName = "id"))
+    private Set<Zanr> zanrovi;
+
 }
