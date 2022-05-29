@@ -1,1 +1,1 @@
-INSERT INTO ZANT (naziv) VALUES ('pera');
+INSERT INTO ZANR (naziv) VALUES ('pera');
