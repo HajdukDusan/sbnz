@@ -33,4 +33,8 @@ public class ReportController {
     public void test(@PathVariable Long id){
         reportService.calculateSongScore(id);
     }
+    @GetMapping("/all")
+    public void testAll(){
+        reportService.calculateAllSongScore();
+    }
 }

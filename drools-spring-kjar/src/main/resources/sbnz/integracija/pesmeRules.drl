@@ -7,86 +7,15 @@ import com.example.MusicRecc.model.Korisnik;
 
 
 rule "Check song points"
-    salience 20
+    salience 30
     agenda-group "song_score"
-    no-loop
+    lock-on-active true
     when
         $p : Pesma(points == null || points != 10)
     then
         modify($p){setPoints(10)};
+        System.out.println("Check song points " +  $p.getPoints());
 end
-
-rule "Short song"
-    salience 5
-    agenda-group "song_score"
-    no-loop
-    when
-        $p : Pesma(duzina < 120)
-    then
-
-        modify($p){setPoints($p.getPoints() - 0.7)};
-//        double value = $p.getPoints();
-//        System.out.println("SHORT SONG" + value);
-end
-rule "Medium lenght song"
-    salience 5
-    agenda-group "song_score"
-    no-loop
-    when
-        $p : Pesma(duzina >= 120,duzina <= 300)
-    then
-        modify($p){setPoints($p.getPoints() + 0.9)};
-//        double value = $p.getPoints();
-//        System.out.println("MEDIUM SONG" + value);
-
-end
-rule "Long song"
-    salience 5
-    agenda-group "song_score"
-    no-loop
-    when
-        $p : Pesma(duzina > 300)
-    then
-        modify($p){setPoints($p.getPoints() + 0.5)};
-//        double value = $p.getPoints();
-//        System.out.println("LONG SONG" + value);
-
-end
-//
-
-rule "Below average score"
-    salience 10
-    agenda-group "song_score"
-    no-loop
-    when
-        $p : Pesma(averageOcena < 2.5)
-    then
-        modify($p){setPoints($p.getPoints() - 0.3)};
-//        double value = $p.getPoints();
-//        System.out.println("LONG SONG" + value);
-    end
-rule "Average score"
-    salience 10
-    agenda-group "song_score"
-    no-loop
-    when
-        $p : Pesma(averageOcena > 2.5, averageOcena <4)
-    then
-        modify($p){setPoints($p.getPoints() + 0.5)};
-//        double value = $p.getPoints();
-//        System.out.println("LONG SONG" + value);
-    end
-rule "Above average score"
-    salience 10
-    agenda-group "song_score"
-    no-loop
-    when
-        $p : Pesma(averageOcena >= 4)
-    then
-        modify($p){setPoints($p.getPoints()+ 1.5)};
-//        double value = $p.getPoints();
-//        System.out.println("Average" + value);
-    end
 rule "Calculate song average"
 	salience 19
 	agenda-group "song_score"
@@ -111,6 +40,116 @@ rule "Calculate song average"
         )
     then
     	float count = $value.floatValue();
-        System.out.println("AverageRating" + count);
+        System.out.println("AverageRating " + count);
         modify($p){setAverageOcena(count)};
+    end
+
+rule "Short song"
+    salience 5
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(duzina < 120)
+    then
+
+        modify($p){setPoints($p.getPoints() - 0.7)};
+        System.out.println("SHORT SONG " +  $p.getPoints());
+end
+rule "Medium lenght song"
+    salience 5
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(duzina >= 120,duzina <= 300)
+    then
+        modify($p){setPoints($p.getPoints() + 0.9)};
+        System.out.println("MEDIUM SONG " +  $p.getPoints());
+
+end
+rule "Long song"
+    salience 5
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(duzina > 300)
+    then
+        modify($p){setPoints($p.getPoints() + 0.5)};
+        System.out.println("LONG SONG" +  $p.getPoints());
+
+end
+//
+
+rule "Below average score"
+    salience 10
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(averageOcena < 2.5)
+    then
+        modify($p){setPoints($p.getPoints() * 0.8)};
+//        double value = $p.getPoints();
+        System.out.println("Below average rating" + $p.getPoints());
+    end
+rule "Average score"
+    salience 10
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(averageOcena >= 2.5, averageOcena <4)
+    then
+        modify($p){setPoints($p.getPoints() *1.2)};
+        System.out.println("Average score rule points " + $p.getPoints());
+    end
+rule "Above average score"
+    salience 10
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(averageOcena >= 4)
+    then
+        modify($p){setPoints($p.getPoints()*1.5)};
+        System.out.println("Above average " + $p.getPoints());
+    end
+
+rule "Below 10.000 listenings"
+    salience 10
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(brojSlusanja < 10000)
+    then
+        modify($p){setPoints($p.getPoints()+3)};
+        System.out.println("Below 10.000 listenings " + $p.getPoints());
+    end
+rule "Between 10.000 - 100.000 listenings"
+    salience 10
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(brojSlusanja >= 10000,brojSlusanja < 100000)
+    then
+        modify($p){setPoints($p.getPoints()+3)};
+        System.out.println("Between 10.000 - 100.000 listenings " + $p.getPoints());
+    end
+
+rule "Between 100.000 - 1000.000 listenings"
+    salience 10
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(brojSlusanja >= 100000,brojSlusanja < 1000000)
+    then
+        modify($p){setPoints($p.getPoints()+4)};
+        System.out.println("Between 100.000 - 1000.000 listenings " + $p.getPoints());
+    end
+
+rule "More then 1.000.000 listenings"
+    salience 10
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(brojSlusanja >= 1000000)
+    then
+        modify($p){setPoints($p.getPoints()+5)};
+        System.out.println("More than milion listening" + $p.getPoints());
     end
