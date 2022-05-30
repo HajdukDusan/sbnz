@@ -17,8 +17,8 @@ import lombok.Setter;
 public class Korisnik {
 
     @Id
-    @SequenceGenerator(name = "KorisnikSeqGen", sequenceName = "KorisnikSeq", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "KorisnikSeqGen")
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     @Column(unique = true)

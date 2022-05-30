@@ -1,0 +1,116 @@
+
+package sbnz.integracija;
+
+import com.example.MusicRecc.model.Ocena;
+import com.example.MusicRecc.model.Pesma;
+import com.example.MusicRecc.model.Korisnik;
+
+
+rule "Check song points"
+    salience 20
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(points == null || points != 10)
+    then
+        modify($p){setPoints(10)};
+end
+
+rule "Short song"
+    salience 5
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(duzina < 120)
+    then
+
+        modify($p){setPoints($p.getPoints() - 0.7)};
+//        double value = $p.getPoints();
+//        System.out.println("SHORT SONG" + value);
+end
+rule "Medium lenght song"
+    salience 5
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(duzina >= 120,duzina <= 300)
+    then
+        modify($p){setPoints($p.getPoints() + 0.9)};
+//        double value = $p.getPoints();
+//        System.out.println("MEDIUM SONG" + value);
+
+end
+rule "Long song"
+    salience 5
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(duzina > 300)
+    then
+        modify($p){setPoints($p.getPoints() + 0.5)};
+//        double value = $p.getPoints();
+//        System.out.println("LONG SONG" + value);
+
+end
+//
+
+rule "Below average score"
+    salience 10
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(averageOcena < 2.5)
+    then
+        modify($p){setPoints($p.getPoints() - 0.3)};
+//        double value = $p.getPoints();
+//        System.out.println("LONG SONG" + value);
+    end
+rule "Average score"
+    salience 10
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(averageOcena > 2.5, averageOcena <4)
+    then
+        modify($p){setPoints($p.getPoints() + 0.5)};
+//        double value = $p.getPoints();
+//        System.out.println("LONG SONG" + value);
+    end
+rule "Above average score"
+    salience 10
+    agenda-group "song_score"
+    no-loop
+    when
+        $p : Pesma(averageOcena >= 4)
+    then
+        modify($p){setPoints($p.getPoints()+ 1.5)};
+//        double value = $p.getPoints();
+//        System.out.println("Average" + value);
+    end
+rule "Calculate song average"
+	salience 19
+	agenda-group "song_score"
+	lock-on-active true
+    when
+        $p : Pesma($ocene : ocene != null)
+        $value: Number(floatValue >= 0) from accumulate
+        (
+			Ocena($ocena: this) from $ocene,
+			init
+			(
+				float count = 0;
+			),
+			action
+			(
+				count += $ocena.getOcena();
+			),
+			result
+			(
+				count/($ocene.size())
+		    )
+        )
+    then
+    	float count = $value.floatValue();
+        System.out.println("AverageRating" + count);
+        modify($p){setAverageOcena(count)};
+    end

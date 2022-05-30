@@ -1,0 +1,161 @@
+package sbnz.integracija;
+
+import com.example.MusicRecc.model.Ocena;
+import com.example.MusicRecc.model.Pesma;
+import com.example.MusicRecc.model.Korisnik;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
+import java.time.LocalDate;
+
+//
+//global Restaurant mostRecommendedRestaurant;
+//global Restaurant leastRecommendedRestaurant;
+//global List<UserRestaurantsDTO> dissatisfiedUsers;
+
+declare AlreadyProcessed
+	ruleName: String
+end
+//
+//rule "In the last two months for 10 recommended restaurants user gave a bad grade in at least 5 cases"
+//	agenda-group "dissatisfied"
+//	when
+//		$user: RegisteredUser($recommendedRestaurants: recommendedRestaurants, recommendedRestaurants.size() >= 10);
+//		accumulate (
+//			Restaurant( $restaurant: this, $reviews: restaurantReviews) from $recommendedRestaurants
+//			and
+//			List(size == 1) from collect(
+//         		Review( user == $user &&  rating < 2.5 && creationDate.isAfter(LocalDate.now().minusMonths(2)) )
+//         		from $reviews
+//         	),
+//			$restaurants: collectList($restaurant)
+//		);
+//		eval($restaurants.size() >= 5);
+//	then
+//		System.out.println("\tDissatisfied User => : " + $user.getUsername() + ", bad grades: " + $restaurants.size());
+//		dissatisfiedUsers.add(new UserRestaurantsDTO($user, $restaurants ));
+//end;
+//
+//query getNumOfRecommendations(Long restaurantId, Long $NumOfRecommendations)
+//	$users:  List() from collect(Korisnik());
+//	$NumOfRecommendations:= Number() from accumulate (
+//		Korisnik($user: this, $recommendedRestaurants: recommendedRestaurants ) from $users
+//		and
+//		List(size == 1) from collect(Restaurant( id == restaurantId ) from $recommendedRestaurants),
+//		count($user)
+//	);
+//end;
+//
+
+//rule "Short song"
+//    salience 10
+//    no-loop
+//    when
+//        p : Pesma(duzina < 120, points)
+//    then
+//        modify(p){setPoints(getPoints() - 0.7)};
+//end
+//rule "Medium lenght song"
+//    salience 10
+//    no-loop
+//    when
+//        p : Pesma(duzina >= 120,duzina <= 300, points)
+//    then
+//        modify(p){setPoints(getPoints() + 0.9)};
+//end
+//rule "Long song"
+//    salience 10
+//    no-loop
+//    when
+//        p : Pesma(duzina > 300, points)
+//    then
+//        modify(p){setPoints(getPoints() + 0.5)};
+//end
+//rule "Most times recommended restaurant"
+//	agenda-group "popularity"
+//	salience ($NumOfRecommendations*10)
+//	when
+//		not AlreadyProcessed(ruleName == "Most recommended");
+//		$restaurant:  Restaurant( $id: id, $name: name );
+//		?getNumOfRecommendations($id, $NumOfRecommendations;)
+//	then
+//		System.out.println("\tMost recommended restaurant => : " + $name + ", => " + $NumOfRecommendations);
+//		mostRecommendedRestaurant = $restaurant;
+//		drools.getKnowledgeRuntime().setGlobal("mostRecommendedRestaurant", $restaurant);
+//		insert( new AlreadyProcessed("Most recommended") );
+//end;
+//
+//rule "The least times recommended restaurant"
+//	agenda-group "popularity"
+//	salience (100/($NumOfRecommendations+1))
+//	when
+//		not AlreadyProcessed(ruleName == "Least recommended");
+//		$restaurant:  Restaurant( $id: id, $name: name );
+//		?getNumOfRecommendations($id, $NumOfRecommendations;)
+//	then
+//		System.out.println("\tLeast Recommended Restaurant => : " + $name + ", => " + $NumOfRecommendations);
+//		leastRecommendedRestaurant = $restaurant;
+//		drools.getKnowledgeRuntime().setGlobal("leastRecommendedRestaurant", $restaurant);
+//		insert( new AlreadyProcessed("Least recommended") );
+//end;
+//
+//
+//query "Average rating"
+//	$restaurant: Restaurant();
+//	$reviewSum: Number() from accumulate (
+//		Review( $mark: rating) from $restaurant.getRestaurantReviews(),
+//		sum($mark));
+//	$reviewNum: Number() from accumulate (
+//		Review() from $restaurant.getRestaurantReviews(),
+//		count(1));
+//end;
+
+
+//rule "The least times recommended restaurant"
+//	agenda-group "popularity"
+//	salience (100/($NumOfRecommendations+1))
+//	when
+//		not AlreadyProcessed(ruleName == "Least recommended");
+//		$restaurant:  Restaurant( $id: id, $name: name );
+//		?getNumOfRecommendations($id, $NumOfRecommendations;)
+//	then
+//		System.out.println("\tLeast Recommended Restaurant => : " + $name + ", => " + $NumOfRecommendations);
+//		leastRecommendedRestaurant = $restaurant;
+//		drools.getKnowledgeRuntime().setGlobal("leastRecommendedRestaurant", $restaurant);
+//		insert( new AlreadyProcessed("Least recommended") );
+//end;
+
+
+//
+//query "User ratings"(Long pesmaId)
+//	$pesma: Pesma(id == pesmaId)
+//	$ocenaSum: Number() from accumulate (
+//		Ocena( $mark: ocena) from $pesma.getOcene(),
+//		sum($mark));
+//	$reviewNum: Number() from accumulate (
+//		Ocena() from $pesma.getOcene(),
+//		count(1));
+//	$ones: Number() from accumulate (
+//		Ocena( ocena == 1) from $pesma.getOcene(),
+//		count(1));
+//	$twos: Number() from accumulate (
+//		Ocena( ocena == 2) from $pesma.getOcene(),
+//		count(1));
+//	$threes: Number() from accumulate (
+//		Ocena( ocena == 3) from $pesma.getOcene(),
+//		count(1));
+//	$fours: Number() from accumulate (
+//		Ocena( ocena == 4) from $pesma.getOcene(),
+//		count(1));
+//	$fives: Number() from accumulate (
+//		Ocena( ocena == 5) from $pesma.getOcene(),
+//		count(1));
+//end;
+
+
+
+
+
+
+

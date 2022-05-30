@@ -20,8 +20,8 @@ import lombok.Setter;
 public class Pesma {
 
     @Id
-    @SequenceGenerator(name = "PesmaSeqGen", sequenceName = "PesmaSeq", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PesmaSeqGen")
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     @Column
@@ -43,14 +43,21 @@ public class Pesma {
     protected Date datumIzlaska;
 
 
-    @OneToMany(mappedBy = "pesma")
+    @OneToMany(mappedBy = "pesmaSlusanja")
     private List<Slusanje> slusanja;
 
     protected BigInteger brojSlusanja;
+
+    @Column
+    private double points;
+
+    @Column
+    private double averageOcena;
 
     @ManyToMany(fetch =FetchType.EAGER)
     @JoinTable(name = "pesma_osobina",
             joinColumns = @JoinColumn(name = "pesma_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "osobina_id", referencedColumnName = "id"))
     protected Set<Osobina> osobine;
+
 }

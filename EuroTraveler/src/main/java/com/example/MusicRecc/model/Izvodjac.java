@@ -18,8 +18,8 @@ import java.util.Set;
 public class Izvodjac {
 
     @Id
-    @SequenceGenerator(name = "IzvodjacSeqGen", sequenceName = "IzvodjacSeq", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "IzvodjacSeqGen")
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     @Column

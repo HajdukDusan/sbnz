@@ -20,8 +20,8 @@ import lombok.Setter;
 public class Slusanje {
 
     @Id
-    @SequenceGenerator(name = "SlusanjeSeqGen", sequenceName = "SlusanjeSeq", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SlusanjeSeqGen")
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     @Column
@@ -29,7 +29,7 @@ public class Slusanje {
 
 
 
-    private Long pesma;
+    private Long pesmaSlusanja;
 
     private Long korisnik;
 }
