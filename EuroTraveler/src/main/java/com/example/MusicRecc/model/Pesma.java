@@ -59,5 +59,4 @@ public class Pesma {
             joinColumns = @JoinColumn(name = "pesma_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "osobina_id", referencedColumnName = "id"))
     protected Set<Osobina> osobine;
-
 }

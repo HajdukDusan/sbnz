@@ -28,7 +28,7 @@ public class ReportService {
 //        kieSession.dispose();
 //        return i;
 //    }
-    public void calculateSongScore(Long id) {
+    public Pesma calculateSongScore(Long id) {
         Pesma pesma = pesmaRepository.findById(id).get();
         KieSession kieSession = kieContainer.newKieSession();
         kieSession.getAgenda().getAgendaGroup("song_score").setFocus();
@@ -36,9 +36,9 @@ public class ReportService {
         kieSession.fireAllRules();
         kieSession.dispose();
         pesmaRepository.save(pesma);
-
+        return pesma;
     }
-    public void calculateAllSongScore() {
+    public List<Pesma> calculateAllSongScore() {
         List<Pesma> pesme = pesmaRepository.findAll();
         KieSession kieSession = kieContainer.newKieSession();
         kieSession.getAgenda().getAgendaGroup("song_score").setFocus();
@@ -48,6 +48,6 @@ public class ReportService {
         kieSession.fireAllRules();
         kieSession.dispose();
         pesmaRepository.saveAll(pesme);
-
+        return pesme;
     }
 }

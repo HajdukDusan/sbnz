@@ -1,4 +1,4 @@
-package com.example.MusicRecc.model;
+package com.example.MusicRecc.dto;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
+
+import com.example.MusicRecc.model.Pesma;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,16 +18,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class Slusanje {
+public class SlusanjeDTO {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @Column
     protected LocalDateTime datumSlusanja;
+
+    private Pesma pesma;
 
     private Long pesmaSlusanja;
 
