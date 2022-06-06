@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,9 +28,11 @@ public class Slusanje {
     @Column
     protected LocalDateTime datumSlusanja;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="pesma_id")
     private Pesma pesmaSlusanja;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="korisnik_id")
     private Korisnik korisnik;

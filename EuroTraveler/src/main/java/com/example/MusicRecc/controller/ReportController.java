@@ -7,6 +7,7 @@ import com.example.MusicRecc.service.PesmeService;
 import com.example.MusicRecc.service.ReportService;
 import lombok.AllArgsConstructor;
 
+import org.apache.tomcat.util.http.parser.HttpParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -49,7 +50,10 @@ public class ReportController {
     public ResponseEntity<?> testAll(){
         return new ResponseEntity<Object>(reportService.calculateAllSongScore(), HttpStatus.OK);
     }
-
+    @GetMapping("/all/date")
+    public ResponseEntity<?> testAllDate(){
+        return new ResponseEntity<>(reportService.calculateAllSongScoreDate(), HttpStatus.OK);
+    }
     @GetMapping("/recommendation")
     public ResponseEntity<?> testRecommendation(){
         return new ResponseEntity<Object>(pesmeService.calculateAllSongsRecommendation(), HttpStatus.OK);

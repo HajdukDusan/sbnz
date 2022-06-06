@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -31,7 +33,7 @@ public class ReportService {
 //    }
     public Pesma calculateSongScore(Long id) {
         Pesma pesma = pesmaRepository.findById(id).get();
-        KieSession kieSession = kieContainer.newKieSession();
+        KieSession kieSession = knowledgeService.getRulesSession();
         kieSession.getAgenda().getAgendaGroup("song_score").setFocus();
         kieSession.insert(pesma);
         kieSession.fireAllRules();
@@ -52,10 +54,25 @@ public class ReportService {
         return pesme;
     }
 
+    public List<Pesma> calculateAllSongScoreDate() {
+        List<Pesma> pesme = pesmaRepository.findAll();
+        KieSession kieSession = kieContainer.newKieSession();
+        kieSession.getAgenda().getAgendaGroup("song_score").setFocus();
+        kieSession.insert(LocalDateTime.now().minusMonths(6));
+        for(Pesma pesma: pesme){
+            kieSession.insert(pesma);
+        }
+        kieSession.fireAllRules();
+        kieSession.dispose();
+        pesmaRepository.saveAll(pesme);
+        return pesme;
+    }
+
     public void popularitySongs(){
         List<Pesma> pesme = pesmaRepository.findAll();
         KieSession kieSession = knowledgeService.getRulesSession();
         kieSession.getAgenda().getAgendaGroup("popularity").setFocus();
+        kieSession.setGlobal("songsRankCounter", 0);
         for(Pesma pesma: pesme){
             kieSession.insert(pesma);
         }

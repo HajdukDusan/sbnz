@@ -4,6 +4,11 @@ package sbnz.integracija;
 import com.example.MusicRecc.model.Ocena;
 import com.example.MusicRecc.model.Pesma;
 import com.example.MusicRecc.model.Korisnik;
+import com.example.MusicRecc.model.*;
+import java.time.LocalDateTime;
+import java.math.BigInteger;
+
+global Integer songsRankCounter;
 
 
 rule "Check song points"
@@ -43,7 +48,37 @@ rule "Calculate song average"
         System.out.println("AverageRating " + count);
         modify($p){setAverageOcena(count)};
     end
+rule "Calculate song streams in date range"
+	salience 19
+	agenda-group "song_score"
+	lock-on-active true
+    when
+        $p : Pesma($slusanja: slusanja)
+        $dateAfter: LocalDateTime()
+        $value: Number(intValue >= 0) from accumulate
+        (
+			Slusanje($slusanje: this) from $slusanja,
+			init
+			(
+				int count = 0;
+			),
+			action
+			(
+                if($slusanje.getDatumSlusanja().isAfter($dateAfter)){
+                    count += 1;
+                }
 
+			),
+			result
+			(
+				count
+		    )
+        )
+    then
+    	int count = $value.intValue();
+        System.out.println("Number of streams " + count);
+        modify($p){setBrojSlusanja( BigInteger.valueOf(count))};
+    end
 rule "Short song"
     salience 5
     agenda-group "song_score"
@@ -159,7 +194,10 @@ rule "The most popular songs"
 	salience (100*($p.getPoints()+1))
 	when
 		$p:  Pesma();
+		eval(songsRankCounter != null && songsRankCounter < 3)
 	then
-		System.out.println("\tHighest ranked song => : " + $p.getNaziv() + " " + $p.getPoints());
-//		insert( new AlreadyProcessed("Least recommended") );
+	    drools.getKnowledgeRuntime().setGlobal("songsRankCounter", songsRankCounter + 1);
+	    if(songsRankCounter < 3){
+            System.out.println("\tHighest ranked song => : " + $p.getNaziv() + " " + $p.getPoints());
+	    }
 end;
