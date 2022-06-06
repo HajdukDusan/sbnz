@@ -19,9 +19,15 @@ public class Ocena {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long korisnik;
 
-    private Long pesma;
+    @ManyToOne
+    @JoinColumn(name="korisnik_id", nullable=false)
+    private Korisnik korisnik;
+
+    @ManyToOne
+    @JoinColumn(name="pesma_id", nullable=false)
+    private Pesma pesma;
+
     private Integer ocena;
 
 }

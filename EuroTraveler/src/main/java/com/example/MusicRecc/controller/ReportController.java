@@ -1,3 +1,4 @@
+package com.example.MusicRecc.controller;
 
 import java.util.ArrayList;
 
@@ -52,10 +53,6 @@ public class ReportController {
     @GetMapping("/recommendation")
     public ResponseEntity<?> testRecommendation(){
         return new ResponseEntity<Object>(pesmeService.calculateAllSongsRecommendation(), HttpStatus.OK);
-    }
-    @GetMapping("/{id}")
-    public void test(@PathVariable Long id){
-        reportService.calculateSongScore(id);
     }
 
 }

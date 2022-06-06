@@ -1,0 +1,34 @@
+package sbnz.integracija;
+
+
+import java.util.*;
+import com.example.MusicRecc.model.Korisnik;
+import com.example.MusicRecc.model.*;
+import com.example.MusicRecc.model.Pesma;
+rule "Find korisnik favorite songs from ocene"
+    agenda-group "korisnik_rules"
+    lock-on-active true
+    when
+        $korisnik : Korisnik($ocene : istorijaOcena)
+        $favoriteSongs: Set() from accumulate
+        (
+            Ocena($ocena: this) from $ocene,
+            init
+            (
+                Set<Pesma> setPesama = new HashSet<Pesma>();
+            ),
+            action
+            (
+                if($ocena.getOcena() > 3){
+                    setPesama.add($ocena.getPesma());
+                }
+            ),
+            result
+            (
+                new HashSet<>(setPesama)
+            )
+        )
+    then
+        System.out.println("Check song points " +  $favoriteSongs);
+    end
+

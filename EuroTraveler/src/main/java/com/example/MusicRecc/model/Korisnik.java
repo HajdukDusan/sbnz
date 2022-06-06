@@ -1,6 +1,7 @@
 package com.example.MusicRecc.model;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -33,4 +34,10 @@ public class Korisnik {
 
     @OneToMany(mappedBy = "korisnik")
     protected List<Ocena> istorijaOcena;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "korisnik_pesma",
+            joinColumns = @JoinColumn(name = "korisnik_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "pesma_id", referencedColumnName = "id"))
+    protected Set<Pesma> omiljenePesme;
 }

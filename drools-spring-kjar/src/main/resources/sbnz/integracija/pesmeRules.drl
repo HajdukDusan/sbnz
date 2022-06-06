@@ -87,7 +87,6 @@ rule "Below average score"
         $p : Pesma(averageOcena < 2.5)
     then
         modify($p){setPoints($p.getPoints() * 0.8)};
-//        double value = $p.getPoints();
         System.out.println("Below average rating" + $p.getPoints());
     end
 rule "Average score"
