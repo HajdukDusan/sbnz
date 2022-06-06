@@ -27,7 +27,10 @@ public class Slusanje {
     @Column
     protected LocalDateTime datumSlusanja;
 
-    private Long pesmaSlusanja;
-
-    private Long korisnik;
+    @ManyToOne
+    @JoinColumn(name="pesma_id")
+    private Pesma pesmaSlusanja;
+    @ManyToOne
+    @JoinColumn(name="korisnik_id")
+    private Korisnik korisnik;
 }

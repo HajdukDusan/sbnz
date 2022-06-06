@@ -27,7 +27,7 @@ public class KorisnikDTO {
 
     protected String email;
 
-    protected List<SlusanjeDTO> istorijaSlusanja;
+    protected List<Slusanje> istorijaSlusanja;
 
     protected List<Ocena> istorijaOcena;
 

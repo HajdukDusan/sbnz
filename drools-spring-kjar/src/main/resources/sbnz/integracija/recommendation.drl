@@ -2,82 +2,84 @@
 package sbnz.integracija;
 
 import com.example.MusicRecc.model.Ocena;
+import com.example.MusicRecc.model.*;
+import java.util.*;
 import com.example.MusicRecc.dto.PesmaDTO;
 import com.example.MusicRecc.dto.KorisnikDTO;
 import com.example.MusicRecc.dto.SlusanjeDTO;
 
 
-//rule "Init points"
-//    salience 30
-//    agenda-group "recommendation_score"
-//    lock-on-active true
-//    when
-//        $p : PesmaDTO()
-//    then
-//        modify($p){setPoints(0)};
-//        System.out.println("Set base points " +  $p.getPoints());
-//end
-//
-//rule "Favorite Genre"
-//    salience 20
-//    agenda-group "recommendation_score"
-//    no-loop
-//    when
-//        $korisnik : KorisnikDTO($istorijaSlusanja : istorijaSlusanja != null)
-//        $value: List() from accumulate
-//        (
-//			SlusanjeDTO($slusanje: this) from $istorijaSlusanja,
-//			init
-//			(
-//                Set<Zanr> set = new HashSet();
-//			),
-//			action
-//			(
-//                for(Zanr zanr : $slusanje.getPesma().getZanroviPesma())
-//                {
-//                    set.add(zanr);
-//                }
-//			),
-//			result
-//			(
-//				new ArrayList<Zanr>(set);
-//		    )
-//        )
-//    then
-//        modify($korisnik){setOmiljeniZanrovi($value)};
-//        System.out.println("Modified korisnik " + $korisnik.username);
-//    end
-//
-//
-//rule "Genre score"
-//    salience 10
-//    agenda-group "recommendation_score"
-//    no-loop
-//    when
-//        $pesma : PesmaDTO($ocene : ocene != null, $zanroviPesma : zanroviPesma != null)
-//        $korisnik : KorisnikDTO($omiljeniZanrovi : omiljeniZanrovi != null)
-//        $value: Number(count > 0) from accumulate
-//        (
-//			Zanr($zanr: this) from $omiljeniZanrovi,
-//			init
-//			(
-//                int count = 0;
-//			),
-//			action
-//			(
-//                for(Zanr zanr_pesme : $pesma.getZanroviPesma())
-//                {
-//                    if(zanr_pesme.id == zanr.id) {
-//                        count += 1;
-//                    }
-//                }
-//			),
-//			result
-//			(
-//				count;
-//		    )
-//        )
-//    then
-//        modify($pesma){setPoints($pesma.getPoints() + $value.count)};
-//        System.out.println("Genre score points " + $pesma.getPoints());
-//    end
+rule "Init points"
+    salience 30
+    agenda-group "recommendation_score"
+    lock-on-active true
+    when
+        $p : PesmaDTO()
+    then
+        modify($p){setPoints(0)};
+        System.out.println("Set base points " +  $p.getPoints());
+end
+
+rule "Favorite Genre"
+    salience 20
+    agenda-group "recommendation_score"
+    lock-on-active true
+    when
+        $korisnik : KorisnikDTO($istorijaSlusanja : istorijaSlusanja != null)
+        $value: List() from accumulate
+        (
+			Slusanje($slusanje: this) from $istorijaSlusanja,
+			init
+			(
+                Set<Zanr> set = new HashSet();
+			),
+			action
+			(
+                for(Zanr zanr : $slusanje.getPesmaSlusanja().getZanroviPesma())
+                {
+                    set.add(zanr);
+                }
+			),
+			result
+			(
+				new ArrayList<Zanr>(set)
+		    )
+        )
+    then
+        modify($korisnik){setOmiljeniZanrovi($value)};
+        System.out.println("Modified korisnik " + $korisnik.getUsername());
+    end
+
+
+rule "Genre score"
+    salience 10
+    agenda-group "recommendation_score"
+    lock-on-active true
+    when
+        $pesma : PesmaDTO($ocene : ocene != null, $zanroviPesma : zanroviPesma != null)
+        $korisnik : KorisnikDTO($istorijaSlusanja : istorijaSlusanja != null,$omiljeniZanrovi : omiljeniZanrovi != null)
+        $value: Number(intValue() > 0) from accumulate
+        (
+			Zanr($zanr: this) from $omiljeniZanrovi,
+			init
+			(
+                int count = 0;
+			),
+			action
+			(
+                for(Zanr zanr_pesme : $pesma.getZanroviPesma())
+                {
+                    if(zanr_pesme.getId() == $zanr.getId()) {
+                        count += 1;
+                    }
+                }
+			),
+			result
+			(
+				count
+		    )
+        )
+    then
+        modify($pesma){setPoints($pesma.getPoints() + $value.intValue())};
+        System.out.println("Genre score points " + $pesma.getPoints());
+    end

@@ -24,9 +24,7 @@ public class SlusanjeDTO {
 
     protected LocalDateTime datumSlusanja;
 
-    private Pesma pesma;
-
-    private Long pesmaSlusanja;
+    private Pesma pesmaSlusanja;
 
     private Long korisnik;
 }

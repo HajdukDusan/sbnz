@@ -29,6 +29,7 @@ rule "Find korisnik favorite songs from ocene"
             )
         )
     then
+        modify($korisnik){setOmiljenePesme($favoriteSongs)}
         System.out.println("Check song points " +  $favoriteSongs);
     end
 
