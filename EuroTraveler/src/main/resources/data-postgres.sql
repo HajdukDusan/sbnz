@@ -1,4 +1,4 @@
-INSERT INTO KORISNIK(email,username,password) VALUES ('pera','pera','pera');
+INSERT INTO KORISNIK(email,username,password) VALUES ('pera','pera','pera'),('pera1','pera1','pera1');
 
 INSERT INTO ZANR (naziv) VALUES ('pera');
 

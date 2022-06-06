@@ -30,19 +30,19 @@ public class PesmeTest {
         KieServices kieServices = KieServices.Factory.get();
         kieContainer = kieServices.newKieContainer(kieServices.newReleaseId("sbnz", "drools-spring-kjar", "0.0.1-SNAPSHOT"));
 
-        Pesma p1 = new Pesma();
-        p1.setId(1L);
-        Pesma p2 = new Pesma();
-        p2.setId(2L);
-        Ocena o = new Ocena();
-        o.setPesma(1L);
-        o.setOcena(1);
-        Ocena o1 = new Ocena();
-        o.setPesma(1L);
-        o.setOcena(1);
-        Ocena o2 = new Ocena();
-        o.setPesma(1L);
-        o.setOcena(1);
+//        Pesma p1 = new Pesma();
+//        p1.setId(1L);
+//        Pesma p2 = new Pesma();
+//        p2.setId(2L);
+//        Ocena o = new Ocena();
+//        o.setPesma(1L);
+//        o.setOcena(1);
+//        Ocena o1 = new Ocena();
+//        o.setPesma(1L);
+//        o.setOcena(1);
+//        Ocena o2 = new Ocena();
+//        o.setPesma(1L);
+//        o.setOcena(1);
     }
     @Test
     public void testScore(){

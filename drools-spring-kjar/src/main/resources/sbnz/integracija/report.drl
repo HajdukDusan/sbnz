@@ -155,15 +155,15 @@ end
 //		count(1));
 //end;
 
-rule "The most popular songs"
-	agenda-group "popularity"
-	salience (100*($p.getPoints()+1))
-	when
-		$p:  Pesma();
-	then
-		System.out.println("\tHighest ranked song => : " + $p.getNaziv() + " " + $p.getPoints());
-//		insert( new AlreadyProcessed("Least recommended") );
-end;
+//rule "The most popular songs"
+//	agenda-group "popularity"
+//	salience (100*($p.getPoints()+1))
+//	when
+//		$p:  Pesma();
+//	then
+//		System.out.println("\tHighest ranked song => : " + $p.getNaziv() + " " + $p.getPoints());
+////		insert( new AlreadyProcessed("Least recommended") );
+//end;
 
 
 

@@ -19,6 +19,7 @@ public class ReportService {
 
     private final KieContainer kieContainer;
 
+    private final KnowledgeService knowledgeService;
     private final PesmaRepository pesmaRepository;
 
 //    public Integer userRatings(Long pesmaId){
@@ -49,5 +50,16 @@ public class ReportService {
         kieSession.dispose();
         pesmaRepository.saveAll(pesme);
         return pesme;
+    }
+
+    public void popularitySongs(){
+        List<Pesma> pesme = pesmaRepository.findAll();
+        KieSession kieSession = knowledgeService.getRulesSession();
+        kieSession.getAgenda().getAgendaGroup("popularity").setFocus();
+        for(Pesma pesma: pesme){
+            kieSession.insert(pesma);
+        }
+        kieSession.fireAllRules();
+        kieSession.dispose();
     }
 }

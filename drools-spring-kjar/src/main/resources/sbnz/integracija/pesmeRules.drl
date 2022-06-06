@@ -152,3 +152,14 @@ rule "More then 1.000.000 listenings"
         modify($p){setPoints($p.getPoints()+5)};
         System.out.println("More than milion listening" + $p.getPoints());
     end
+
+
+rule "The most popular songs"
+	agenda-group "popularity"
+	salience (100*($p.getPoints()+1))
+	when
+		$p:  Pesma();
+	then
+		System.out.println("\tHighest ranked song => : " + $p.getNaziv() + " " + $p.getPoints());
+//		insert( new AlreadyProcessed("Least recommended") );
+end;

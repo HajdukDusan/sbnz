@@ -1,5 +1,6 @@
 package com.example.MusicRecc.service;
 
+import com.example.MusicRecc.event.RatingEvent;
 import com.example.MusicRecc.model.Korisnik;
 import com.example.MusicRecc.model.Pesma;
 import com.example.MusicRecc.repository.KorisnikRepository;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class KorisnikService {
-    private final KieContainer kieContainer;
+    private final KnowledgeService knowledgeService;
 
     private final ModelMapper modelMapper;
 
@@ -20,7 +21,7 @@ public class KorisnikService {
 
     public void korisnikCalculateFavoriteSongs(Long id) {
         Korisnik korisnik = korisnikRepository.findById(id).get();
-        KieSession kieSession = kieContainer.newKieSession();
+        KieSession kieSession = knowledgeService.getRulesSession();
         kieSession.getAgenda().getAgendaGroup("korisnik_rules").setFocus();
         kieSession.insert(korisnik);
         kieSession.fireAllRules();
@@ -30,4 +31,9 @@ public class KorisnikService {
     }
 
 
+    public void rateSong(Long id) {
+        KieSession kieSession = knowledgeService.getEventsSession();
+        kieSession.insert(new RatingEvent(id));
+        kieSession.fireAllRules();
+    }
 }

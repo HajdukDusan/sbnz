@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -59,7 +60,6 @@ public class Pesma {
             joinColumns = @JoinColumn(name = "pesma_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "osobina_id", referencedColumnName = "id"))
     protected Set<Osobina> osobine;
-
 
     @ManyToMany(mappedBy = "omiljenePesme", fetch = FetchType.LAZY)
     private Set<Korisnik> omiljenePesme;

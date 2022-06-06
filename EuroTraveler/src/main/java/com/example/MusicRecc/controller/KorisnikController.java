@@ -24,4 +24,9 @@ public class KorisnikController {
         korisnikService.korisnikCalculateFavoriteSongs(id);
 //        return new ResponseEntity<Korisnik>(korisnikService.korisnikCalculateFavoriteSongs(id), HttpStatus.OK);
     }
+
+    @GetMapping("/rate/{id}")
+    public void korisnikRate(@PathVariable Long id){
+        korisnikService.rateSong(id);
+    }
 }

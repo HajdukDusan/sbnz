@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,7 @@ public class Korisnik {
 
     @OneToMany(mappedBy = "korisnik")
     protected List<Slusanje> istorijaSlusanja;
+
 
     @OneToMany(mappedBy = "korisnik")
     protected List<Ocena> istorijaOcena;

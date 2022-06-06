@@ -1,0 +1,32 @@
+package sbnz.integracija.cep;
+
+import java.util.*;
+import com.example.MusicRecc.model.*;
+import com.example.MusicRecc.event.*;
+declare SpamRatingEvent
+	@role(event)
+	korisnik: Long
+	reason: String
+end
+
+
+
+//rule "inserting Spam event one"
+//	when
+//		SpamRatingEvent($k:korisnik, reason == "Dont spam ratings")
+//	then
+//		insert(new SpamRatingEvent($k, "Stop spamming"));
+//end
+
+rule "More than 3 ratings cases in the day and we warn the owner"
+    when
+        RatingEvent($kID: korisnikId)
+        Number(intValue >= 5) from accumulate(
+            $s: RatingEvent(korisnikId == $kID),
+            count($s)
+        )
+    then
+        //warn the owner
+        System.out.println("WARNING: Suspicious fraud case. Client " + $kID);
+        insert(new SpamRatingEvent($kID, "Many transactions"));
+end

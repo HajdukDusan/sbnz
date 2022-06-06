@@ -5,6 +5,11 @@ import java.util.*;
 import com.example.MusicRecc.model.Korisnik;
 import com.example.MusicRecc.model.*;
 import com.example.MusicRecc.model.Pesma;
+
+//
+//query songIsContainedIn(Pesma p)
+//    Korisnik(omiljenePesme: omiljenePesme.contains(p))
+//end
 rule "Find korisnik favorite songs from ocene"
     agenda-group "korisnik_rules"
     lock-on-active true

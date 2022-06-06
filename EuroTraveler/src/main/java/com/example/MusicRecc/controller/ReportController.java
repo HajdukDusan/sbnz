@@ -55,4 +55,9 @@ public class ReportController {
         return new ResponseEntity<Object>(pesmeService.calculateAllSongsRecommendation(), HttpStatus.OK);
     }
 
+    @GetMapping("/popularity")
+    public void popularity(){
+        reportService.popularitySongs();
+    }
+
 }
