@@ -1,4 +1,3 @@
-package com.example.MusicRecc.controller;
 
 import java.util.ArrayList;
 
@@ -44,6 +43,7 @@ public class ReportController {
     public ResponseEntity<?> test(@PathVariable Long id){
         return new ResponseEntity<Pesma>(reportService.calculateSongScore(id), HttpStatus.OK);
     }
+
     @GetMapping("/all")
     public ResponseEntity<?> testAll(){
         return new ResponseEntity<Object>(reportService.calculateAllSongScore(), HttpStatus.OK);
@@ -53,4 +53,9 @@ public class ReportController {
     public ResponseEntity<?> testRecommendation(){
         return new ResponseEntity<Object>(pesmeService.calculateAllSongsRecommendation(), HttpStatus.OK);
     }
+    @GetMapping("/{id}")
+    public void test(@PathVariable Long id){
+        reportService.calculateSongScore(id);
+    }
+
 }

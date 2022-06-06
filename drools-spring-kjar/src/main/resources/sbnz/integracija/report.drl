@@ -155,20 +155,15 @@ end
 //		count(1));
 //end;
 
-//rule "The most popular songs"
-//	agenda-group "popularity"
-//	salience (100/($NumOfRecommendations+1))
-//	when
-//	    $listOfSongs: List(size > 0)
-//		not AlreadyProcessed(ruleName == "Least recommended");
-//		$restaurant:  Restaurant( $id: id, $name: name );
-//		?getNumOfRecommendations($id, $NumOfRecommendations;)
-//	then
-//		System.out.println("\tLeast Recommended Restaurant => : " + $name + ", => " + $NumOfRecommendations);
-//		leastRecommendedRestaurant = $restaurant;
-//		drools.getKnowledgeRuntime().setGlobal("leastRecommendedRestaurant", $restaurant);
+rule "The most popular songs"
+	agenda-group "popularity"
+	salience (100*($p.getPoints()+1))
+	when
+		$p:  Pesma();
+	then
+		System.out.println("\tHighest ranked song => : " + $p.getNaziv() + " " + $p.getPoints());
 //		insert( new AlreadyProcessed("Least recommended") );
-//end;
+end;
 
 
 
