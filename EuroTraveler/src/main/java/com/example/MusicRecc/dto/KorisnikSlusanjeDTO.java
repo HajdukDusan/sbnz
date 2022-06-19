@@ -1,31 +1,27 @@
 package com.example.MusicRecc.dto;
 
-import java.math.BigInteger;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
-import javax.persistence.*;
-
+import com.example.MusicRecc.model.Korisnik;
 import com.example.MusicRecc.model.Pesma;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SlusanjeDTO {
+public class KorisnikSlusanjeDTO {
 
-    protected Long id;
 
-    protected LocalDateTime datumSlusanja;
+    private Integer slusanja;
 
+    @JsonIgnore
     private Pesma pesmaSlusanja;
 
-    private Long korisnik;
-
+    @JsonIgnore
+    private Korisnik korisnik;
 }

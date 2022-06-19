@@ -23,7 +23,7 @@ public class Izvodjac {
     protected Long id;
 
     @Column
-    protected String Ime;
+    protected String naziv;
     @OneToMany
     protected List<Pesma> pesme;
     @ManyToMany(fetch = FetchType.EAGER)

@@ -1,6 +1,7 @@
 package com.example.MusicRecc.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.example.MusicRecc.model.Pesma;
 import com.example.MusicRecc.service.PesmeService;
@@ -64,4 +65,8 @@ public class ReportController {
         reportService.popularitySongs();
     }
 
+    @GetMapping("/template")
+    public ResponseEntity<List<Pesma>> template_test(){
+        return new ResponseEntity<>(pesmeService.template_test(),HttpStatus.OK);
+    }
 }

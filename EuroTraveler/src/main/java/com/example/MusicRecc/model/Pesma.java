@@ -8,16 +8,14 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@ToString
 public class Pesma {
 
     @Id
@@ -30,7 +28,10 @@ public class Pesma {
     @Column
     private String naziv;
 
-    private Long izvodjac;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name="izvodjac_id")
+    private Izvodjac izvodjac;
     @ManyToMany(fetch =FetchType.EAGER)
     @JoinTable(name = "pesma_zanr",
             joinColumns = @JoinColumn(name = "pesma_id", referencedColumnName = "id"),
@@ -61,6 +62,7 @@ public class Pesma {
             inverseJoinColumns = @JoinColumn(name = "osobina_id", referencedColumnName = "id"))
     protected Set<Osobina> osobine;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "omiljenePesme", fetch = FetchType.LAZY)
     private Set<Korisnik> omiljenePesme;
 }

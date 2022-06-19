@@ -1,0 +1,24 @@
+template header
+
+name
+
+package template;
+
+import com.example.MusicRecc.model.*;
+import java.util.List;
+import java.util.ArrayList;
+
+global ArrayList<Pesma> result;
+
+template "searchByName-rules"
+
+
+rule "Get songs by singer_@{row.rowNumber}"
+no-loop true
+when
+    $p : Pesma(izvodjac != null,izvodjac.getNaziv() == "@{name}")
+then
+	result.add($p);
+end
+
+end template

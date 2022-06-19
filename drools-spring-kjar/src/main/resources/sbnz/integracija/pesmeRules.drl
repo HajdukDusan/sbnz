@@ -194,7 +194,7 @@ rule "The most popular songs"
 	salience (100*($p.getPoints()+1))
 	when
 		$p:  Pesma();
-		eval(songsRankCounter != null && songsRankCounter < 3)
+		eval(songsRankCounter != null && songsRankCounter < 3);
 	then
 	    drools.getKnowledgeRuntime().setGlobal("songsRankCounter", songsRankCounter + 1);
 	    if(songsRankCounter < 3){

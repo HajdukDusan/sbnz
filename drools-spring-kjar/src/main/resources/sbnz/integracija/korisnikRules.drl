@@ -1,17 +1,28 @@
 package sbnz.integracija;
 
 
+
+
 import java.util.*;
-import com.example.MusicRecc.model.Korisnik;
 import com.example.MusicRecc.model.*;
 import com.example.MusicRecc.model.Pesma;
+import com.example.MusicRecc.dto.*
+import java.util.stream.Collectors
+import java.util.stream.Stream;
 
+global Set<Pesma> favoritePesme;
+
+global Long userId;
+declare Processed
+  ruleName: String
+end
 //
 //query songIsContainedIn(Pesma p)
 //    Korisnik(omiljenePesme: omiljenePesme.contains(p))
 //end
 rule "Find korisnik favorite songs from ocene"
     agenda-group "korisnik_rules"
+    salience 10
     lock-on-active true
     when
         $korisnik : Korisnik($ocene : istorijaOcena)
@@ -37,4 +48,82 @@ rule "Find korisnik favorite songs from ocene"
         modify($korisnik){setOmiljenePesme($favoriteSongs)}
         System.out.println("Check song points " +  $favoriteSongs);
     end
+
+
+rule "Find korisnik favorite songs from slusanje"
+    agenda-group "slusanje_rules"
+    salience ($slusanje.getSlusanja())
+    lock-on-active true
+    when
+        not Processed(ruleName == "Slusanje");
+        $slusanje: KorisnikSlusanjeDTO();
+
+    then
+        favoritePesme.add($slusanje.getPesmaSlusanja());
+        if(favoritePesme.size() >= 10){
+            insert( new Processed("Slusanje") );
+        }
+        System.out.println("Inserted songs " +  $slusanje.getPesmaSlusanja().getNaziv());
+    end
+
+
+
+rule "Combine favorite songs from slusanje and ocene"
+    agenda-group "slusanje_rules"
+    lock-on-active true
+
+    when
+        $korisnik: Korisnik(omiljenePesme != null);
+//        Processed(ruleName == "Slusanje")
+    then
+        Set<Pesma> pesme = $korisnik.getOmiljenePesme();
+        for(Object p: favoritePesme){
+            System.out.print(p);
+            pesme.add((Pesma) p);
+        }
+        $korisnik.setOmiljenePesme(pesme);
+        System.out.println($korisnik.getOmiljenePesme().size());
+end
+//
+rule "Find simular users"
+    agenda-group "korisnik_rules"
+    lock-on-active true
+
+    when
+        $korisnik: Korisnik(userId != null,id == userId,omiljenePesme != null);
+        $other_korisnik: Korisnik(userId != null, id != userId,omiljenePesme != null);
+        $simularity: Set() from accumulate
+        (
+            Pesma($pesma: this) from $korisnik.getOmiljenePesme(),
+            init
+            (
+                Set<Pesma> setPesama = new HashSet<Pesma>();
+            ),
+            action
+            (
+                System.out.println($other_korisnik.getId());
+                if($other_korisnik.getOmiljenePesme().contains($pesma)){
+                System.out.println("usao");
+                    setPesama.add($pesma);
+                }
+            ),
+            result
+            (
+                new HashSet<>(setPesama)
+            )
+        )
+//        $simularity: Set() from accumulate (
+//
+//
+//            Pesma($other_korisnik.omiljenePesme.contains(this)) from $korisnik.getOmiljenePesme(),
+////			List(size > 0) from collect(
+////         		Pesma($other_korisnik.getOmiljenePesme().contains(this))
+////         		from $korisnik.getOmiljenePesme()
+////         	),
+//
+//
+//        );
+    then
+        System.out.println("Simularity" + $simularity.size());
+end
 
