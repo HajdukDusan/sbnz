@@ -25,6 +25,15 @@ public class KorisnikService {
     private KorisnikRepository korisnikRepository;
 
 
+    public static HashMap<Long, Integer> sortByValue(HashMap<Long, Integer> map) {
+
+        List<Map.Entry<Long, Integer>> list = new ArrayList<>(map.entrySet());
+        list.sort(Map.Entry.comparingByValue());
+        LinkedHashMap<Long, Integer> sortedMap = new LinkedHashMap<>();
+        list.forEach(e -> sortedMap.put(e.getKey(), e.getValue()));
+        return sortedMap;
+    }
+
     public List<KorisnikSlusanjeDTO> calculateKorisnikSlusanja(Korisnik korisnik){
         List<Slusanje> slusanjeList = korisnik.getIstorijaSlusanja();
         Map<Pesma,KorisnikSlusanjeDTO> pesmaSlusanjeMap = new HashMap();
@@ -58,6 +67,7 @@ public class KorisnikService {
         kieSession.dispose();
         List<KorisnikPesmaDTO> pesmaDTOS =korisnik.getOmiljenePesme().stream().map(pesma -> modelMapper.map(pesma, KorisnikPesmaDTO.class))
                 .collect(Collectors.toList());
+        korisnikRepository.save(korisnik);
         return pesmaDTOS;
 
     }
@@ -67,16 +77,17 @@ public class KorisnikService {
             throw new Exception();
         }
         List<Korisnik> korisnici = korisnikRepository.findAll();
+        Map<Long,Integer> simularityMap = new HashMap<>();
         KieSession kieSession = knowledgeService.getRulesSession();
         kieSession.getAgenda().getAgendaGroup("korisnik_rules").setFocus();
         kieSession.setGlobal("userId",id);
+        kieSession.setGlobal("simularityMap",simularityMap);
         for(Korisnik k : korisnici){
             kieSession.insert(k);
         }
         kieSession.fireAllRules();
         kieSession.dispose();
-//        korisnikRepository.save(korisnik);
-//        return korisnik;
+        korisnikRepository.saveAll(korisnici);
     }
 
 

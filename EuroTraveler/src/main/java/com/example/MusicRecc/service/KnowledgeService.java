@@ -31,7 +31,6 @@ public class KnowledgeService {
 
     public KieSession getRulesSession() {
         rulesSession = kieContainer.newKieSession();
-        System.out.println("asdasd");
         return rulesSession;
     }
 

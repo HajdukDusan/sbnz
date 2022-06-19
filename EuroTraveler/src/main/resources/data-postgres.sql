@@ -32,7 +32,7 @@ INSERT INTO OCENA(ocena,pesma_id,korisnik_id) VALUES (5,5,1);
 
 INSERT INTO OCENA(ocena,pesma_id,korisnik_id) VALUES (5,5,2);
 
-
+INSERT INTO OCENA(ocena,pesma_id,korisnik_id) VALUES (4,5,3);
 INSERT INTO OCENA(ocena,pesma_id,korisnik_id) VALUES (4,5,3);
 -- INSERT INTO OCENA(ocena,pesma_id) VALUES (3,2);
 -- INSERT INTO OCENA(ocena,pesma_id) VALUES (4,2);
@@ -73,6 +73,11 @@ INSERT INTO SLUSANJE(datum_slusanja, pesma_id,korisnik_id) VALUES ('2021-02-02 1
 
 
 
-INSERT INTO SLUSANJE(datum_slusanja,pesma_id,korisnik_id) VALUES ('2021-06-08 12:12:12',3,2);
-INSERT INTO SLUSANJE(datum_slusanja,pesma_id,korisnik_id) VALUES ('2021-02-02 12:12:12',3,2);
-INSERT INTO SLUSANJE(datum_slusanja, pesma_id,korisnik_id) VALUES ('2021-02-02 12:12:12',3,2);
+INSERT INTO SLUSANJE(datum_slusanja,pesma_id,korisnik_id) VALUES ('2021-06-08 12:12:12',3,3);
+INSERT INTO SLUSANJE(datum_slusanja,pesma_id,korisnik_id) VALUES ('2021-02-02 12:12:12',3,3);
+INSERT INTO SLUSANJE(datum_slusanja, pesma_id,korisnik_id) VALUES ('2021-02-02 12:12:12',3,3);
+
+
+INSERT INTO SLUSANJE(datum_slusanja,pesma_id,korisnik_id) VALUES ('2021-06-08 12:12:12',4,3);
+INSERT INTO SLUSANJE(datum_slusanja,pesma_id,korisnik_id) VALUES ('2021-02-02 12:12:12',4,3);
+INSERT INTO SLUSANJE(datum_slusanja, pesma_id,korisnik_id) VALUES ('2021-02-02 12:12:12',4,3);

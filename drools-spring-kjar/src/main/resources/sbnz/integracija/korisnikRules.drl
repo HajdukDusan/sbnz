@@ -11,7 +11,7 @@ import java.util.stream.Collectors
 import java.util.stream.Stream;
 
 global Set<Pesma> favoritePesme;
-
+global Map<Long,Integer> simularityMap;
 global Long userId;
 declare Processed
   ruleName: String
@@ -25,7 +25,7 @@ rule "Find korisnik favorite songs from ocene"
     salience 10
     lock-on-active true
     when
-        $korisnik : Korisnik($ocene : istorijaOcena)
+        $korisnik : Korisnik($ocene : istorijaOcena,omiljenePesme.size() == 0)
         $favoriteSongs: Set() from accumulate
         (
             Ocena($ocena: this) from $ocene,
@@ -35,6 +35,7 @@ rule "Find korisnik favorite songs from ocene"
             ),
             action
             (
+                System.out.println($korisnik.getOmiljenePesme());
                 if($ocena.getOcena() > 3){
                     setPesama.add($ocena.getPesma());
                 }
@@ -74,11 +75,9 @@ rule "Combine favorite songs from slusanje and ocene"
 
     when
         $korisnik: Korisnik(omiljenePesme != null);
-//        Processed(ruleName == "Slusanje")
     then
         Set<Pesma> pesme = $korisnik.getOmiljenePesme();
         for(Object p: favoritePesme){
-            System.out.print(p);
             pesme.add((Pesma) p);
         }
         $korisnik.setOmiljenePesme(pesme);
@@ -112,18 +111,8 @@ rule "Find simular users"
                 new HashSet<>(setPesama)
             )
         )
-//        $simularity: Set() from accumulate (
-//
-//
-//            Pesma($other_korisnik.omiljenePesme.contains(this)) from $korisnik.getOmiljenePesme(),
-////			List(size > 0) from collect(
-////         		Pesma($other_korisnik.getOmiljenePesme().contains(this))
-////         		from $korisnik.getOmiljenePesme()
-////         	),
-//
-//
-//        );
     then
-        System.out.println("Simularity" + $simularity.size());
+        simularityMap.put($other_korisnik.getId(),$simularity.size());
+        System.out.println("Simularity" + simularityMap);
 end
 
