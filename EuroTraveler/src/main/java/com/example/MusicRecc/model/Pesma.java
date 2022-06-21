@@ -15,7 +15,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@ToString
 public class Pesma {
 
     @Id
@@ -65,4 +64,9 @@ public class Pesma {
     @JsonIgnore
     @ManyToMany(mappedBy = "omiljenePesme", fetch = FetchType.LAZY)
     private Set<Korisnik> omiljenePesme;
+
+    @Override
+    public String toString() {
+        return naziv;
+    }
 }

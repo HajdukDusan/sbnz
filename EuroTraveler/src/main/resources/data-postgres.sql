@@ -1,6 +1,7 @@
 INSERT INTO KORISNIK(email,username,password) VALUES ('pera','pera','pera'),
                                                      ('pera1','pera1','pera1'),
-                                                     ('pera2','pera2','pera2');
+                                                     ('pera2','pera2','pera2'),
+                                                    ('pera3','pera3','pera3');
 
 INSERT INTO ZANR (naziv) VALUES ('pera');
 
@@ -34,9 +35,13 @@ INSERT INTO OCENA(ocena,pesma_id,korisnik_id) VALUES (5,5,2);
 
 INSERT INTO OCENA(ocena,pesma_id,korisnik_id) VALUES (4,5,3);
 INSERT INTO OCENA(ocena,pesma_id,korisnik_id) VALUES (4,5,3);
--- INSERT INTO OCENA(ocena,pesma_id) VALUES (3,2);
--- INSERT INTO OCENA(ocena,pesma_id) VALUES (4,2);
--- INSERT INTO OCENA(ocena,pesma_id) VALUES (4,2);
+INSERT INTO OCENA(ocena,pesma_id,korisnik_id) VALUES (4,5,4);
+
+INSERT INTO OCENA(ocena,pesma_id,korisnik_id) VALUES (4,5,4);
+INSERT INTO OCENA(ocena,pesma_id,korisnik_id) VALUES (4,8,4);
+
+
+
 INSERT INTO SLUSANJE(datum_slusanja,pesma_id,korisnik_id) VALUES ('2022-06-08 12:12:12',2,1);
 INSERT INTO SLUSANJE(datum_slusanja,pesma_id,korisnik_id) VALUES ('2022-02-02 12:12:12',2,1);
 INSERT INTO SLUSANJE(datum_slusanja, pesma_id,korisnik_id) VALUES ('2022-02-02 12:12:12',2,1);

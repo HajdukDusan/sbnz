@@ -13,4 +13,5 @@ import lombok.Setter;
 public class KorisnikPesmaDTO {
 
     private String naziv;
+    private String username;
 }

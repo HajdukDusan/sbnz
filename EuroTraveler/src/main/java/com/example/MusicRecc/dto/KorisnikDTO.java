@@ -23,13 +23,13 @@ public class KorisnikDTO {
 
     protected String username;
 
-//    protected String password;
-//
-//    protected String email;
-//
-//    protected List<Slusanje> istorijaSlusanja;
-//
-//    protected List<Ocena> istorijaOcena;
-//
-//    protected List<Zanr> omiljeniZanrovi;
+    protected String password;
+
+    protected String email;
+
+    protected List<Slusanje> istorijaSlusanja;
+
+    protected List<Ocena> istorijaOcena;
+
+    protected List<Zanr> omiljeniZanrovi;
 }

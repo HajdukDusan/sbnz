@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 global Set<Pesma> favoritePesme;
 global Map<Long,Integer> simularityMap;
+global Set<Pesma> songReccomend;
 global Long userId;
 declare Processed
   ruleName: String
@@ -56,13 +57,13 @@ rule "Find korisnik favorite songs from slusanje"
     salience ($slusanje.getSlusanja())
     lock-on-active true
     when
-        not Processed(ruleName == "Slusanje");
         $slusanje: KorisnikSlusanjeDTO();
+        not Processed(ruleName == ("Slusanje" + $slusanje.getKorisnik()));
 
     then
         favoritePesme.add($slusanje.getPesmaSlusanja());
         if(favoritePesme.size() >= 10){
-            insert( new Processed("Slusanje") );
+            insert( new Processed("Slusanje" + $slusanje.getKorisnik()) );
         }
         System.out.println("Inserted songs " +  $slusanje.getPesmaSlusanja().getNaziv());
     end
@@ -85,7 +86,7 @@ rule "Combine favorite songs from slusanje and ocene"
 end
 //
 rule "Find simular users"
-    agenda-group "korisnik_rules"
+    agenda-group "simularity_rules"
     lock-on-active true
 
     when
@@ -100,9 +101,7 @@ rule "Find simular users"
             ),
             action
             (
-                System.out.println($other_korisnik.getId());
                 if($other_korisnik.getOmiljenePesme().contains($pesma)){
-                System.out.println("usao");
                     setPesama.add($pesma);
                 }
             ),
@@ -113,6 +112,36 @@ rule "Find simular users"
         )
     then
         simularityMap.put($other_korisnik.getId(),$simularity.size());
-        System.out.println("Simularity" + simularityMap);
+        System.out.println("Simularity " + simularityMap);
 end
 
+rule "Find songs not in target user"
+    agenda-group "simular_rules"
+    lock-on-active true
+
+    when
+        $korisnik: Korisnik(userId != null,id == userId,omiljenePesme != null);
+        $other_korisnik: Korisnik(userId != null, id != userId,omiljenePesme != null);
+        $other_songs: Set() from accumulate
+        (
+            Pesma($pesma: this) from $other_korisnik.getOmiljenePesme(),
+            init
+            (
+                Set<Pesma> setPesama = new HashSet<Pesma>();
+            ),
+            action
+            (
+                if(!$korisnik.getOmiljenePesme().contains($pesma)){
+                    setPesama.add($pesma);
+                }
+            ),
+            result
+            (
+                new HashSet<>(setPesama)
+            )
+        )
+    then
+//        simularityMap.put($other_korisnik.getId(),$other_songs.size());
+        songReccomend.addAll($other_songs);
+        System.out.println("Other songs " + $other_songs);
+end

@@ -6,16 +6,14 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@ToString
 public class Korisnik {
 
     @Id
@@ -37,6 +35,7 @@ public class Korisnik {
     @OneToMany(mappedBy = "korisnik")
     protected List<Ocena> istorijaOcena;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "korisnik_pesma",
             joinColumns = @JoinColumn(name = "korisnik_id", referencedColumnName = "id"),

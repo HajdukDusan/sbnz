@@ -25,10 +25,11 @@ public class KorisnikService {
     private KorisnikRepository korisnikRepository;
 
 
-    public static HashMap<Long, Integer> sortByValue(HashMap<Long, Integer> map) {
+    public static HashMap<Long, Integer> sortByValue(Map<Long, Integer> map) {
 
         List<Map.Entry<Long, Integer>> list = new ArrayList<>(map.entrySet());
-        list.sort(Map.Entry.comparingByValue());
+        list.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+
         LinkedHashMap<Long, Integer> sortedMap = new LinkedHashMap<>();
         list.forEach(e -> sortedMap.put(e.getKey(), e.getValue()));
         return sortedMap;
@@ -51,8 +52,15 @@ public class KorisnikService {
         return new ArrayList<>(pesmaSlusanjeMap.values());
     }
 
+    public void calculateAllKorisnikSlusanje(){
+        List<Korisnik> korisnici = korisnikRepository.findAll();
+        for(Korisnik korisnik: korisnici){
+            korisnikFavoriteSongsSlusanje(korisnik.getId());
+        }
+    }
 
-    public List<KorisnikPesmaDTO> korisnikFaviteSongsSlusanje(Long id){
+
+    public List<KorisnikPesmaDTO> korisnikFavoriteSongsSlusanje(Long id){
         Korisnik korisnik = korisnikRepository.findById(id).get();
         List<KorisnikSlusanjeDTO> slusanjeDTOS = calculateKorisnikSlusanja(korisnik);
         Set<Pesma> favoritePesme = new HashSet<>();
@@ -67,30 +75,79 @@ public class KorisnikService {
         kieSession.dispose();
         List<KorisnikPesmaDTO> pesmaDTOS =korisnik.getOmiljenePesme().stream().map(pesma -> modelMapper.map(pesma, KorisnikPesmaDTO.class))
                 .collect(Collectors.toList());
+
+
         korisnikRepository.save(korisnik);
         return pesmaDTOS;
 
     }
     public void korisnikCalculateFavoriteSongs(Long id) throws Exception {
-//        Korisnik korisnik = korisnikRepository.findById(id).get();
         if(korisnikRepository.findById(id).isEmpty()){
             throw new Exception();
         }
         List<Korisnik> korisnici = korisnikRepository.findAll();
-        Map<Long,Integer> simularityMap = new HashMap<>();
+
         KieSession kieSession = knowledgeService.getRulesSession();
         kieSession.getAgenda().getAgendaGroup("korisnik_rules").setFocus();
-        kieSession.setGlobal("userId",id);
-        kieSession.setGlobal("simularityMap",simularityMap);
         for(Korisnik k : korisnici){
             kieSession.insert(k);
         }
         kieSession.fireAllRules();
         kieSession.dispose();
+
+
         korisnikRepository.saveAll(korisnici);
     }
 
+    public List<Korisnik> findSimularUsers(Long id){
 
+        Map<Long,Integer> simularityMap = new HashMap<>();
+
+        KieSession kieSession = knowledgeService.getRulesSession();
+        kieSession.getAgenda().getAgendaGroup("simularity_rules").setFocus();
+        kieSession.setGlobal("userId",id);
+        kieSession.setGlobal("simularityMap",simularityMap);
+
+        List<Korisnik> korisnici = korisnikRepository.findAll();
+        for(Korisnik k : korisnici){
+            kieSession.insert(k);
+        }
+
+        kieSession.fireAllRules();
+        kieSession.dispose();
+
+
+        simularityMap = sortByValue(simularityMap);
+
+
+        List<Korisnik> simularKorisnici = new ArrayList<>();
+
+        for (Map.Entry<Long,Integer> pair : simularityMap.entrySet()) {
+            if(korisnikRepository.findById(pair.getKey()).isPresent()){
+                simularKorisnici.add(korisnikRepository.findById(pair.getKey()).get());
+            }
+
+        }
+        return simularKorisnici;
+    }
+    public Set<Pesma> findKorisnikSongReccomendation(Long id,List<Korisnik> simularKorisnici) throws Exception {
+        if(korisnikRepository.findById(id).isEmpty()){
+            throw new Exception();
+        }
+        Korisnik targetKorisnik = korisnikRepository.findById(id).get();
+        KieSession kieSession = knowledgeService.getRulesSession();
+        kieSession.getAgenda().getAgendaGroup("simular_rules").setFocus();
+        kieSession.setGlobal("userId",id);
+        Set<Pesma> songs = new HashSet<>();
+        kieSession.setGlobal("songReccomend",songs);
+        kieSession.insert(targetKorisnik);
+        for(Korisnik k: simularKorisnici){
+            kieSession.insert(k);
+        }
+        kieSession.fireAllRules();
+        kieSession.dispose();
+        return songs;
+    }
     public void rateSong(Long id) {
         KieSession kieSession = knowledgeService.getEventsSession();
         kieSession.insert(new RatingEvent(id));
