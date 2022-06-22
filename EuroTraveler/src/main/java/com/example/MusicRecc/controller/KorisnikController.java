@@ -1,5 +1,6 @@
 package com.example.MusicRecc.controller;
 
+import com.example.MusicRecc.dto.KorisnikDTO;
 import com.example.MusicRecc.dto.KorisnikPesmaDTO;
 import com.example.MusicRecc.dto.KorisnikSlusanjeDTO;
 import com.example.MusicRecc.model.Korisnik;
@@ -45,6 +46,11 @@ public class KorisnikController {
         korisnikService.calculateAllKorisnikSlusanje();
     }
 
+
+    @GetMapping("/get/all")
+    public List<KorisnikDTO> getAllKorisnik(){
+        return korisnikService.findAll();
+    }
     @GetMapping("/all")
     public void korisnikFavoriteSongs() throws Exception {
         korisnikService.korisnikCalculateFavoriteSongs(1L);

@@ -1,5 +1,6 @@
 package com.example.MusicRecc.service;
 
+import com.example.MusicRecc.dto.KorisnikDTO;
 import com.example.MusicRecc.dto.KorisnikPesmaDTO;
 import com.example.MusicRecc.dto.KorisnikSlusanjeDTO;
 import com.example.MusicRecc.event.RatingEvent;
@@ -152,5 +153,10 @@ public class KorisnikService {
         KieSession kieSession = knowledgeService.getEventsSession();
         kieSession.insert(new RatingEvent(id));
         kieSession.fireAllRules();
+    }
+
+    public List<KorisnikDTO> findAll() {
+        List<Korisnik> korisnici = korisnikRepository.findAll();
+        return korisnici.stream().map(korisnik -> modelMapper.map(korisnik,KorisnikDTO.class)).collect(Collectors.toList());
     }
 }
