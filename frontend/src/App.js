@@ -2,8 +2,6 @@ import React, { Component } from "react";
 
 import { Link, Outlet } from "react-router-dom";
 import "./App.css";
-import Example from "././user/user";
-import Users from "././user/users";
 
 function App() {
   return (

@@ -11,14 +11,6 @@ root.render(
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="users" element={<Users />}>
-        <Route
-          index
-          element={
-            <main style={{ padding: "1rem" }}>
-              <p>Select user</p>
-            </main>
-          }
-        />
         <Route path=":userId" element={<User />} />
       </Route>
       <Route

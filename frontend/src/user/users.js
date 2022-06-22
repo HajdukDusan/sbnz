@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import {
+  Route,
+  Link,
+  NavLink,
+  Outlet,
+  useSearchParams,
+} from "react-router-dom";
+
 export default function Users() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [users, setItems] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // Note: the empty deps array [] means
-  // this useEffect will run once
-  // similar to componentDidMount()
   useEffect(() => {
     fetch("http://localhost:8080/korisnik/get/all")
       .then((res) => res.json())
       .then(
         (result) => {
           setIsLoaded(true);
-          setItems(result);
+          setUsers(result);
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
           setIsLoaded(true);
           setError(error);
@@ -34,19 +36,42 @@ export default function Users() {
     return (
       <div>
         <ul>
-          {users.map((user) => (
-            // <li key={item.id}>
-            //   {item.username} {item.id} <button>Slusanje</button>
-            // </li>
-
-            <Link
-              style={{ display: "block", margin: "1rem 0" }}
-              to={`/users/${user.id}`}
-              key={user.id}
-            >
-              {user.username}
-            </Link>
-          ))}
+          <input
+            value={searchParams.get("filter") || ""}
+            onChange={(event) => {
+              let filter = event.target.value;
+              if (filter) {
+                setSearchParams({ filter });
+              } else {
+                setSearchParams({});
+              }
+            }}
+          />
+          {users
+            .filter((user) => {
+              let filter = searchParams.get("filter");
+              if (!filter) return true;
+              let name = user.username.toLowerCase();
+              return name.startsWith(filter.toLowerCase());
+            })
+            .map((user) => (
+              <NavLink
+                style={({ isActive }) => {
+                  return {
+                    display: "block",
+                    margin: "1rem 0",
+                    color: isActive ? "red" : "",
+                  };
+                }}
+                to={{
+                  pathname: `/users/${user.id}`,
+                  state: { fromDashboard: true },
+                }}
+                key={user.id}
+              >
+                {user.username}
+              </NavLink>
+            ))}
         </ul>
         <Outlet />
       </div>

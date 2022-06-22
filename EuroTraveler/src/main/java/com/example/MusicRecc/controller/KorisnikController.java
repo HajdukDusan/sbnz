@@ -51,6 +51,10 @@ public class KorisnikController {
     public List<KorisnikDTO> getAllKorisnik(){
         return korisnikService.findAll();
     }
+    @GetMapping("/get/{id}")
+    public KorisnikDTO getAllKorisnik(@PathVariable Long id) throws Exception {
+        return korisnikService.findById(id);
+    }
     @GetMapping("/all")
     public void korisnikFavoriteSongs() throws Exception {
         korisnikService.korisnikCalculateFavoriteSongs(1L);

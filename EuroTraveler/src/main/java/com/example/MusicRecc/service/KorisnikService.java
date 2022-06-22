@@ -159,4 +159,13 @@ public class KorisnikService {
         List<Korisnik> korisnici = korisnikRepository.findAll();
         return korisnici.stream().map(korisnik -> modelMapper.map(korisnik,KorisnikDTO.class)).collect(Collectors.toList());
     }
+
+    public KorisnikDTO findById(Long id) throws Exception {
+        if(korisnikRepository.findById(id).isEmpty()){
+            throw new Exception();
+        }
+
+        Korisnik korisnik = korisnikRepository.findById(id).get();
+        return modelMapper.map(korisnik,KorisnikDTO.class);
+    }
 }
