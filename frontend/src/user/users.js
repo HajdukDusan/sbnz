@@ -65,7 +65,6 @@ export default function Users() {
                 }}
                 to={{
                   pathname: `/users/${user.id}`,
-                  state: { fromDashboard: true },
                 }}
                 key={user.id}
               >
