@@ -32,4 +32,6 @@ public class KorisnikDTO {
     protected List<Ocena> istorijaOcena;
 
     protected List<Zanr> omiljeniZanrovi;
+
+    private List<PesmaDTO> omiljenePesme;
 }

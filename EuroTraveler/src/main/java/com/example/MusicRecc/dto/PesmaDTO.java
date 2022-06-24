@@ -29,21 +29,21 @@ public class PesmaDTO {
 
     private String naziv;
 
-    private Long izvodjac;
-
-    private List<Zanr> zanroviPesma;
-
-    private List<Ocena> ocene;
-
-    protected Date datumIzlaska;
-
-    private List<Slusanje> slusanja;
+//    private Long izvodjac;
+//
+//    private List<Zanr> zanroviPesma;
+//
+//    private List<Ocena> ocene;
+//
+//    protected Date datumIzlaska;
+//
+//    private List<Slusanje> slusanja;
 
     protected BigInteger brojSlusanja;
 
-    private double points;
-
-    private double averageOcena;
-
-    protected Set<Osobina> osobine;
+//    private double points;
+//
+//    private double averageOcena;
+//
+//    protected Set<Osobina> osobine;
 }

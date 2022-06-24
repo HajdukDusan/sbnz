@@ -3,6 +3,7 @@ package com.example.MusicRecc.service;
 import com.example.MusicRecc.dto.KorisnikDTO;
 import com.example.MusicRecc.dto.KorisnikPesmaDTO;
 import com.example.MusicRecc.dto.KorisnikSlusanjeDTO;
+import com.example.MusicRecc.dto.PesmaDTO;
 import com.example.MusicRecc.event.RatingEvent;
 import com.example.MusicRecc.model.Korisnik;
 import com.example.MusicRecc.model.Pesma;
@@ -166,6 +167,9 @@ public class KorisnikService {
         }
 
         Korisnik korisnik = korisnikRepository.findById(id).get();
-        return modelMapper.map(korisnik,KorisnikDTO.class);
+        List<PesmaDTO> pesmaDTOS = korisnik.getOmiljenePesme().stream().map(pesma -> modelMapper.map(pesma, PesmaDTO.class)).collect(Collectors.toList());
+        KorisnikDTO korisnikDTO = modelMapper.map(korisnik,KorisnikDTO.class);
+        korisnikDTO.setOmiljenePesme(pesmaDTOS);
+        return korisnikDTO;
     }
 }

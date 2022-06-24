@@ -6,7 +6,15 @@ import {
   Outlet,
   useSearchParams,
 } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
 
+
+function favoriteSongsFromSlusanje(){
+  fetch("http://localhost:8080/korisnik/slusanja/all")
+}
+function favoriteSongsFromOcene(){
+  fetch("http://localhost:8080/korisnik/all")
+}
 export default function Users() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -27,7 +35,7 @@ export default function Users() {
         }
       );
   }, []);
-
+  
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
@@ -35,6 +43,8 @@ export default function Users() {
   } else {
     return (
       <div>
+        <Button variant="primary" onClick={() => favoriteSongsFromOcene()}>Calculate favorite songs from ocene</Button>{' '}
+        <Button variant="primary" onClick={() => favoriteSongsFromSlusanje()}>Calculate favorite songs from slusanje</Button>
         <ul>
           <input
             value={searchParams.get("filter") || ""}
