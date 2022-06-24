@@ -133,6 +133,7 @@ public class KorisnikService {
         return simularKorisnici;
     }
     public Set<Pesma> findKorisnikSongReccomendation(Long id,List<Korisnik> simularKorisnici) throws Exception {
+
         if(korisnikRepository.findById(id).isEmpty()){
             throw new Exception();
         }
@@ -148,6 +149,9 @@ public class KorisnikService {
         }
         kieSession.fireAllRules();
         kieSession.dispose();
+
+        //TODO: SEARCH DODATI OVDE
+
         return songs;
     }
     public void rateSong(Long id) {

@@ -7,6 +7,7 @@ public class SearchDTO {
 
     private String name;
 
+
     public SearchDTO() {
         // TODO Auto-generated constructor stub
     }
