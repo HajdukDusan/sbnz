@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Button from 'react-bootstrap/Button';
 
 import { Link, Outlet } from "react-router-dom";
 import "./App.css";
@@ -13,7 +14,13 @@ function App() {
           paddingBottom: "1rem",
         }}
       >
-        <Link to="/users">Users</Link> | <Link to="/songs">Songs</Link>
+          <Link to="/users">
+            <Button>Users </Button>    
+          </Link>
+          <span>          </span>
+          <Link to="/songs">
+            <Button>Songs</Button>
+          </Link>
       </nav>
       <Outlet />
     </div>

@@ -5,15 +5,17 @@ import App from "./App";
 import Users from "./user/users";
 import User from "./user/user";
 import 'bootstrap/dist/css/bootstrap.css';
+import Songs from "./songs/songs";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <div>
   <BrowserRouter>
+    <App />
     <Routes>
-      <Route path="/" element={<App />} />
       <Route path="users" element={<Users />}>
         <Route path=":userId" element={<User />} />
       </Route>
+      <Route path="songs" element={<Songs />} />
       <Route
         path="*"
         element={

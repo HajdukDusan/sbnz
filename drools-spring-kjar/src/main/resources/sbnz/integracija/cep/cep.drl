@@ -18,7 +18,9 @@ end
 //		insert(new SpamRatingEvent($k, "Stop spamming"));
 //end
 
-rule "More than 3 ratings cases in the day and we warn the owner"
+//TODO: dodati flag korisniku
+
+rule "More than 5 ratings cases in the day and we warn the owner"
     when
         RatingEvent($kID: korisnikId)
         Number(intValue >= 5) from accumulate(

@@ -16,7 +16,9 @@ template "searchByName-rules"
 rule "Get songs by singer_@{row.rowNumber}"
 no-loop true
 when
-    $p : Pesma(izvodjac != null,izvodjac.getNaziv() == "@{name}")
+    $p : Pesma(
+        izvodjac != null, izvodjac.getNaziv().toLowerCase().contains("@{name}".toLowerCase())
+        )
 then
 	result.add($p);
 end

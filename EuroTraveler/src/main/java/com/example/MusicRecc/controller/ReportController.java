@@ -60,6 +60,11 @@ public class ReportController {
         return new ResponseEntity<Object>(pesmeService.calculateAllSongsRecommendation(), HttpStatus.OK);
     }
 
+    @GetMapping("/allSongs")
+    public ResponseEntity<List<Pesma>> getAllSong() {
+        return new ResponseEntity<List<Pesma>>(pesmeService.getAll(), HttpStatus.OK);
+    }
+
     @GetMapping("/popularity")
     public void popularity(){
         reportService.popularitySongs();

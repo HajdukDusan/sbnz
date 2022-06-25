@@ -37,6 +37,10 @@ public class PesmeService {
 
     private final KorisnikRepository korisnikRepository;
 
+    public List<Pesma> getAll() {
+        return pesmaRepository.findAll();
+    }
+
     public List<Pesma> calculateAllSongsRecommendation() {
         List<Pesma> pesme = pesmaRepository.findAll();
         List<Korisnik> korisnici = korisnikRepository.findAll();
