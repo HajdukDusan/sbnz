@@ -1,25 +1,29 @@
 INSERT INTO KORISNIK(email,username,password) VALUES ('pera','pera','pera'),
-                                                     ('pera1','pera1','pera1'),
-                                                     ('pera2','pera2','pera2'),
-                                                    ('pera3','pera3','pera3');
+                                                     ('marko','marko','marko'),
+                                                     ('ana','ana','ana'),
+                                                    ('igor','igor','igor');
 
 INSERT INTO ZANR (naziv) VALUES ('pera');
 
 INSERT INTO IZVODJAC(naziv) values ('radiohead');
 
 INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja) VALUES
-                                                                       ('radiohead',130,0,0,500),('p2',300,0,0,500000),('p3',500,0,0,50000000),('p4',130,0,0,500),('p5',130,0,0,500);
+('radiohead',130,0,0,500),
+('Polozenie',300,0,0,500000),
+('Rock You',500,0,0,50000000),
+('Lost Road',130,0,0,500),
+('ASAP ROCKY',130,0,0,500);
 
 INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('no surprises',130,0,0,500,1);
 INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('rockstar made',130,0,0,500,1);
-INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('pesma1',130,0,0,500,1);
-INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('pesma2',130,0,0,500,1);
-INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('pesma3',130,0,0,500,1);
-INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('pesma4',130,0,0,500,1);
-INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('pesma5',130,0,0,500,1);
-INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('pesma6',130,0,0,500,1);
-INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('pesma7',130,0,0,500,1);
-INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('pesma8',130,0,0,500,1);
+INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('Sigma Grindset',130,0,0,500,1);
+INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('Honest Person',130,0,0,500,1);
+INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('Ride Till We Die',130,0,0,500,1);
+INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('Paradice City',130,0,0,500,1);
+INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('Gangstas Paradice',130,0,0,500,1);
+INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('Fillings',130,0,0,500,1);
+INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('Happy or Sad',130,0,0,500,1);
+INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('Blur',130,0,0,500,1);
 -- INSERT INTO OCENA(ocena,pesma_id) VALUES (1,1);
 -- INSERT INTO OCENA(ocena,pesma_id) VALUES (2,1);
 -- INSERT INTO OCENA(ocena,pesma_id) VALUES (3,1);

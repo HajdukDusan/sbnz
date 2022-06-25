@@ -21,7 +21,7 @@ export default function User() {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name: document.getElementById("searchInput"),
+        name: document.getElementById("searchInput").value,
       })
     };
     fetch('http://localhost:8080/korisnik/songs/' + songId, requestOptions)
