@@ -7,12 +7,12 @@ INSERT INTO ZANR (naziv) VALUES ('pera');
 
 INSERT INTO IZVODJAC(naziv) values ('radiohead');
 
-INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja) VALUES
-('radiohead',130,0,0,500),
-('Polozenie',300,0,0,500000),
-('Rock You',500,0,0,50000000),
-('Lost Road',130,0,0,500),
-('ASAP ROCKY',130,0,0,500);
+INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES
+('radiohead',130,0,0,500,1),
+('Polozenie',300,0,0,500000,1),
+('Rock You',500,0,0,50000000,1),
+('Lost Road',130,0,0,500,1),
+('ASAP ROCKY',130,0,0,500,1);
 
 INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('no surprises',130,0,0,500,1);
 INSERT INTO PESMA(naziv,duzina,points,average_ocena,broj_slusanja,izvodjac_id) VALUES ('rockstar made',130,0,0,500,1);
