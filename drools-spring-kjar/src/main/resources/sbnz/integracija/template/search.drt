@@ -8,7 +8,7 @@ import com.example.MusicRecc.model.*;
 import java.util.*;
 import java.util.ArrayList;
 
-global ArrayList<Pesma> result;
+global HashSet<Pesma> result;
 
 template "searchByName-rules"
 
@@ -20,7 +20,9 @@ when
         izvodjac != null, izvodjac.getNaziv().toLowerCase().contains("@{name}".toLowerCase())
         )
 then
+    System.out.println("Dodao sam " + $p);
 	result.add($p);
+
 end
 
 end template

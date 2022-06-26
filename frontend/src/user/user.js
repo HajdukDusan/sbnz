@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,useSearchParams } from "react-router-dom";
 import axios from 'axios';
 import ListGroup from "react-bootstrap/ListGroup"
 import Button from "react-bootstrap/Button"
@@ -14,32 +14,50 @@ export default function User() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [simularUsers, setSimularUsers] = useState();
 
+  const [searchParams, setSearchParams] = useState("");
   const [recommendedSongs, setRecommendedSongs] = useState([]);
 
-  const findSongRecommendation = (songId) => {
+  // const findSongRecommendation = (searchValue) => {
+  //   setSearchParams(searchValue);
+  //   const requestOptions = {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({
+  //       name: searchParams,
+  //     })
+  //   };
+  //   fetch('http://localhost:8080/korisnik/songs/' + params.userId, requestOptions)
+  //     .then(response => response.json()).then(data => setRecommendedSongs(data));
+      
+  // }
+
+  useEffect(() => {
     const requestOptions = {
-      method: 'GET',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name: document.getElementById("searchInput").value,
+        name: searchParams,
       })
     };
-    fetch('http://localhost:8080/korisnik/songs/' + songId, requestOptions)
-      .then(response => response.json())
-      .then(data => setRecommendedSongs(data));
-  }
+    fetch('http://localhost:8080/korisnik/songs/' + params.userId, requestOptions)
+      .then(response => response.json()).then(data => setRecommendedSongs(data));
+  },[searchParams]);
 
   const fetchData = () => {
     const userUrl = "http://localhost:8080/korisnik/get/" + params.userId;
     const simularUrl = "http://localhost:8080/korisnik/simular/" + params.userId;
+    const songsRecUrl = "http://localhost:8080/korisnik/songs/" + params.userId;
     const getUser = axios.get(userUrl)
     const getSimular = axios.get(simularUrl)
-    axios.all([getUser, getSimular]).then(
+    const getSongs = axios.get(songsRecUrl)
+    axios.all([getUser, getSimular,getSongs]).then(
       axios.spread((...allData) => {
         const userData = allData[0].data
         const simularUsers = allData[1].data
+        const recommendedSong = allData[2].data
         setUser(userData)
         setSimularUsers(simularUsers)
+        setRecommendedSongs(recommendedSong)
         setIsLoaded(true);
       }
       ))
@@ -58,6 +76,7 @@ export default function User() {
     return (
       <div>
         <h2>User: {user.username}</h2>
+        <hr/>
         <h4>Favorite Songs:</h4>
 
         <ListGroup>
@@ -80,16 +99,26 @@ export default function User() {
               </Col>
             ))}
 
-
-
           </Row>
         </ListGroup>
 
-        <h2>Simular users</h2>
+        <h4>Simular users</h4>
         <ListGroup>
-          {simularUsers.map((korisnik) => (<ListGroup.Item key={korisnik.username}>{korisnik.username}</ListGroup.Item>))}
+          {simularUsers.map((korisnik) => (<ListGroup.Item key={korisnik.username}>{korisnik.username} Simularity: {korisnik.simularity}</ListGroup.Item>))}
         </ListGroup>
-
+        <h4>Song recommendations</h4>
+        <input
+            id="searchInput"
+            value={searchParams}
+            
+            onChange={(event) => {
+              setSearchParams(event.target.value)
+              // findSongRecommendation(event.target.value)
+            }}
+          />
+        <ListGroup>
+          {recommendedSongs.map((pesma) => (<ListGroup.Item key={pesma.id}>{pesma.naziv}</ListGroup.Item>))}
+        </ListGroup>
       </div>
     );
   }

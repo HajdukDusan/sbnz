@@ -11,7 +11,9 @@ import lombok.AllArgsConstructor;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 import org.kie.internal.utils.KieHelper;
@@ -64,6 +66,25 @@ public class PesmeService {
         return pesme;
     }
 
+    public Set<Pesma> filter_pesme(Set<Pesma> pesme, SearchDTO query){
+        Set<Pesma> result = new HashSet<>();
+
+
+        InputStream template = PesmeService.class.getResourceAsStream("/sbnz/integracija/template/search.drt");
+        ObjectDataCompiler converter = new ObjectDataCompiler();
+        List<SearchDTO> data = new ArrayList<>();
+        data.add(query);
+        String drl = converter.compile(data, template);
+
+        KieSession kieSession = knowledgeService.createKieSessionFromDRL(drl);
+
+        for(Pesma pesma: pesme){
+            kieSession.insert(pesma);
+        }
+        kieSession.setGlobal("result", result);
+        kieSession.fireAllRules();
+        return result;
+    }
     public List<Pesma> template_test(){
         List<Pesma> result = new ArrayList<>();
         List<Pesma> pesme = pesmaRepository.findAll();

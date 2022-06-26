@@ -7,12 +7,17 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
+import "./users.css";
 
 function favoriteSongsFromSlusanje() {
   fetch("http://localhost:8080/korisnik/slusanja/all")
 }
 function favoriteSongsFromOcene() {
   fetch("http://localhost:8080/korisnik/all")
+}
+
+function refreshRecomendation() {
+  fetch("http://localhost:8080/korisnik/refresh")
 }
 
 export default function Users() {
@@ -46,7 +51,8 @@ export default function Users() {
       <div>
         <p></p>
         <Button variant="primary" onClick={() => favoriteSongsFromOcene()}>Calculate favorite songs from ocene</Button>{' '}
-        <Button variant="primary" onClick={() => favoriteSongsFromSlusanje()}>Calculate favorite songs from slusanje</Button>
+        <Button variant="primary" onClick={() => favoriteSongsFromSlusanje()}>Calculate favorite songs from slusanje</Button>{' '}
+        <Button variant="primary" onClick={() => refreshRecomendation()}>Refresh recommendations</Button>{' '}
         <p></p>
         <ul>
           <input

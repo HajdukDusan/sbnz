@@ -102,7 +102,7 @@ public class KorisnikService {
         korisnikRepository.saveAll(korisnici);
     }
 
-    public List<Korisnik> findSimularUsers(Long id) {
+    public Map<Long,Integer> generateSimularityMap(Long id){
 
         Map<Long, Integer> simularityMap = new HashMap<>();
 
@@ -119,20 +119,45 @@ public class KorisnikService {
         kieSession.fireAllRules();
         kieSession.dispose();
 
-        simularityMap = sortByValue(simularityMap);
+        return sortByValue(simularityMap);
+    }
+    public List<Korisnik> findSimularUsers(Long id) {
+
+
+        Map<Long,Integer> simularityMap = generateSimularityMap(id);
 
         List<Korisnik> simularKorisnici = new ArrayList<>();
 
         for (Map.Entry<Long, Integer> pair : simularityMap.entrySet()) {
-            if (korisnikRepository.findById(pair.getKey()).isPresent()) {
-                simularKorisnici.add(korisnikRepository.findById(pair.getKey()).get());
+            if(pair.getValue() > 0){
+                if (korisnikRepository.findById(pair.getKey()).isPresent()) {
+                    simularKorisnici.add(korisnikRepository.findById(pair.getKey()).get());
+                }
             }
-
         }
         return simularKorisnici;
     }
 
-    public List<Pesma> findKorisnikSongReccomendation(Long id, List<Korisnik> simularKorisnici, SearchDTO searchInput)
+    public List<KorisnikPesmaDTO> findSimularUsersDTO(Long id){
+
+
+        Map<Long,Integer> simularityMap = generateSimularityMap(id);
+
+        List<KorisnikPesmaDTO> korisnikPesmaDTOS = new ArrayList<>();
+
+        for (Map.Entry<Long, Integer> pair : simularityMap.entrySet()) {
+            if(pair.getValue() > 0){
+                if (korisnikRepository.findById(pair.getKey()).isPresent()) {
+                    KorisnikPesmaDTO korisnikPesmaDTO = modelMapper.map(korisnikRepository.findById(pair.getKey()).get(),KorisnikPesmaDTO.class);
+                    korisnikPesmaDTO.setSimularity(pair.getValue());
+                    korisnikPesmaDTOS.add(korisnikPesmaDTO);
+
+                }
+            }
+        }
+        return korisnikPesmaDTOS;
+    }
+    public Set<Pesma> findKorisnikSongReccomendation(Long id, List<Korisnik> simularKorisnici)
             throws Exception {
 
         if (korisnikRepository.findById(id).isEmpty()) {
@@ -151,24 +176,8 @@ public class KorisnikService {
         kieSession.fireAllRules();
         kieSession.dispose();
 
-        // SEARCH TEMPLATE
-        List<Pesma> result = new ArrayList<>();
-        List<Pesma> pesme = new ArrayList<Pesma>(songs);
 
-        InputStream template = PesmeService.class.getResourceAsStream("/sbnz/integracija/template/search.drt");
-        ObjectDataCompiler converter = new ObjectDataCompiler();
-        List<SearchDTO> data = new ArrayList<>();
-        data.add(searchInput);
-        String drl = converter.compile(data, template);
-
-        KieSession kieSession2 = knowledgeService.createKieSessionFromDRL(drl);
-
-        for(Pesma pesma: pesme){
-            kieSession2.insert(pesma);
-        }
-        kieSession2.setGlobal("result", result);
-        kieSession2.fireAllRules();
-        return result;
+        return songs;
     }
 
     public void rateSong(Long korisnikId, Long pesmaId, Integer grade) {
@@ -194,5 +203,13 @@ public class KorisnikService {
         KorisnikDTO korisnikDTO = modelMapper.map(korisnik, KorisnikDTO.class);
         korisnikDTO.setOmiljenePesme(pesmaDTOS);
         return korisnikDTO;
+    }
+
+    public void refreshKorisnike() {
+        List<Korisnik> korisnici = korisnikRepository.findAll();
+        for(Korisnik korisnik: korisnici){
+            korisnik.setOmiljenePesme(new HashSet<>());
+        }
+        korisnikRepository.saveAll(korisnici);
     }
 }

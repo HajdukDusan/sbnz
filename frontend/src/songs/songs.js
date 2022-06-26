@@ -27,7 +27,6 @@ export default function Songs() {
             .then(response => response.json())
             .then(data => setSongs(data));
         setShow(false);
-        window.location.reload();
     }
 
     useEffect(() => {

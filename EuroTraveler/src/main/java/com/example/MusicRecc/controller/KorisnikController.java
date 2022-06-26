@@ -1,20 +1,13 @@
 package com.example.MusicRecc.controller;
 
-import com.example.MusicRecc.dto.KorisnikDTO;
-import com.example.MusicRecc.dto.KorisnikPesmaDTO;
-import com.example.MusicRecc.dto.KorisnikSlusanjeDTO;
-import com.example.MusicRecc.dto.SearchDTO;
+import com.example.MusicRecc.dto.*;
 import com.example.MusicRecc.model.Korisnik;
 import com.example.MusicRecc.model.Pesma;
 import com.example.MusicRecc.service.KorisnikService;
+import com.example.MusicRecc.service.PesmeService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
@@ -26,6 +19,7 @@ import java.util.stream.Collectors;
 public class KorisnikController {
 
     private KorisnikService korisnikService;
+    private PesmeService pesmeService;
     private ModelMapper modelMapper;
 
     @GetMapping("/{id}")
@@ -64,22 +58,28 @@ public class KorisnikController {
     @GetMapping("/all")
     public void korisnikFavoriteSongs() throws Exception {
         korisnikService.korisnikCalculateFavoriteSongs(1L);
-        // return new
-        // ResponseEntity<Korisnik>(korisnikService.korisnikCalculateFavoriteSongs(id),
-        // HttpStatus.OK);
     }
 
     @GetMapping("/simular/{id}")
     public List<KorisnikPesmaDTO> simularKorisnici(@PathVariable Long id) {
-        // return korisnikService.findSimularUsers(id);
-        return korisnikService.findSimularUsers(id).stream()
-                .map(korisnik -> modelMapper.map(korisnik, KorisnikPesmaDTO.class)).collect(Collectors.toList());
+        return korisnikService.findSimularUsersDTO(id);
     }
-
+    @GetMapping("/refresh")
+    public void refreshKorisnik(){
+        korisnikService.refreshKorisnike();
+    }
     @GetMapping("/songs/{id}")
-    public List<Pesma> simularSongsUserKorisnici(@PathVariable Long id, @RequestBody SearchDTO searchDto)
+    public Set<Pesma> simularSongsUserKorisnici(@PathVariable Long id)
             throws Exception {
         List<Korisnik> korisnici = korisnikService.findSimularUsers(id);
-        return korisnikService.findKorisnikSongReccomendation(id, korisnici, searchDto);
+        return korisnikService.findKorisnikSongReccomendation(id, korisnici);
+    }
+    @PostMapping("/songs/{id}")
+    public Set<Pesma> simularSongsUserKorisniciQuery(@PathVariable Long id, @RequestBody SearchDTO searchDto)
+            throws Exception {
+        List<Korisnik> korisnici = korisnikService.findSimularUsers(id);
+        Set<Pesma> pesme = korisnikService.findKorisnikSongReccomendation(id, korisnici);
+        pesme = pesmeService.filter_pesme(pesme,searchDto);
+        return pesme;
     }
 }

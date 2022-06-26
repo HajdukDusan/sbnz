@@ -29,19 +29,6 @@ public class ReportController {
 
     private PesmeService pesmeService;
 
-
-//    @RequestMapping(value = "/item", method = RequestMethod.GET, produces = "application/json")
-//    public Item getQuestions(@RequestParam(required = false) String id, @RequestParam(required = false) String name,
-//                             @RequestParam(required = false) double cost, @RequestParam(required = false) double salePrice) {
-//
-//        Item newItem = new Item(Long.parseLong(id), name, cost, salePrice);
-//
-//        log.debug("Item request received for: " + newItem);
-//
-//        Item i2 = reportService.getClassifiedItem(newItem);
-//        System.out.println("AAAAAA"  + newItem.toString());
-//        return i2;
-//    }
     @GetMapping("/{id}")
     public ResponseEntity<?> test(@PathVariable Long id){
         return new ResponseEntity<Pesma>(reportService.calculateSongScore(id), HttpStatus.OK);

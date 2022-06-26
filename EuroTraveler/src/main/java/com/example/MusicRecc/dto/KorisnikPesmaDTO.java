@@ -17,4 +17,6 @@ public class KorisnikPesmaDTO {
 
     private String naziv;
     private String username;
+    private Long id;
+    private Integer simularity;
 }

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.math.BigInteger;
 
 global Integer songsRankCounter;
-
+global List<Pesma> songs;
 
 rule "Check song points"
     salience 30
@@ -196,8 +196,8 @@ rule "The most popular songs"
 		$p:  Pesma();
 		eval(songsRankCounter != null && songsRankCounter < 3);
 	then
-	    drools.getKnowledgeRuntime().setGlobal("songsRankCounter", songsRankCounter + 1);
-	    if(songsRankCounter < 3){
+        if(songs.size() < 10){
+	        songs.add($p);
             System.out.println("\tHighest ranked song => : " + $p.getNaziv() + " " + $p.getPoints());
 	    }
 end;
