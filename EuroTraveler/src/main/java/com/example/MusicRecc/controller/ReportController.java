@@ -1,6 +1,9 @@
 package com.example.MusicRecc.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.example.MusicRecc.model.Pesma;
@@ -38,9 +41,12 @@ public class ReportController {
     public ResponseEntity<?> testAll(){
         return new ResponseEntity<Object>(reportService.calculateAllSongScore(), HttpStatus.OK);
     }
-    @GetMapping("/all/date")
-    public ResponseEntity<?> testAllDate(){
-        return new ResponseEntity<>(reportService.calculateAllSongScoreDate(), HttpStatus.OK);
+    @GetMapping("/all/{date}")
+    public ResponseEntity<?> testAllDate(@PathVariable String date) throws ParseException{
+        Date d = new Date();
+        if(date != "")
+            d = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        return new ResponseEntity<>(reportService.calculateAllSongScoreDate(d), HttpStatus.OK);
     }
     @GetMapping("/recommendation")
     public ResponseEntity<?> testRecommendation(){

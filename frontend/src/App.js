@@ -21,6 +21,10 @@ function App() {
           <Link to="/songs">
             <Button>Songs</Button>
           </Link>
+          <span>          </span>
+          <Link to="/report">
+            <Button>Report</Button>
+          </Link>
       </nav>
       <Outlet />
     </div>

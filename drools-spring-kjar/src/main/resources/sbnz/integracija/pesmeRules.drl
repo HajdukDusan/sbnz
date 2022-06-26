@@ -194,7 +194,6 @@ rule "The most popular songs"
 	salience (100*($p.getPoints()+1))
 	when
 		$p:  Pesma();
-		eval(songsRankCounter != null && songsRankCounter < 3);
 	then
         if(songs.size() < 10){
 	        songs.add($p);

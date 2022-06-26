@@ -6,6 +6,7 @@ import Users from "./user/users";
 import User from "./user/user";
 import 'bootstrap/dist/css/bootstrap.css';
 import Songs from "./songs/songs";
+import Report from "./report/Report";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <div>
@@ -16,6 +17,7 @@ root.render(
         <Route path=":userId" element={<User />} />
       </Route>
       <Route path="songs" element={<Songs />} />
+      <Route path="report" element={<Report />} />
       <Route
         path="*"
         element={
